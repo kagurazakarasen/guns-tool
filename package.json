@@ -20,6 +20,9 @@
       {
         "command": "guns-tool.insertSpace",
         "title": "行頭にスペース挿入"
+      },{
+        "command": "guns-tool.removePunctuation",
+        "title": "カッコ内末尾の句点削除"
       }
 
     ]

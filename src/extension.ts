@@ -68,7 +68,37 @@ export function activate(context: vscode.ExtensionContext) {
 		});
 	});
 
-	context.subscriptions.push(helloDisposable, insertDisposable);
+	const removeDisposable = vscode.commands.registerCommand('guns-tool.removePunctuation', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			vscode.window.showInformationMessage('アクティブなエディタがありません。');
+			return;
+		}
+
+		const document = editor.document;
+		const fullText = document.getText();
+
+		// 。」 → 」、。』 → 』 に置換
+		const replacedText = fullText
+			.replace(/。」/g, '」')
+			.replace(/。』/g, '』');
+
+		// 変更がある場合のみ置換を実行
+		if (fullText !== replacedText) {
+			const fullRange = new vscode.Range(
+				document.positionAt(0),
+				document.positionAt(fullText.length)
+			);
+			await editor.edit(editBuilder => {
+				editBuilder.replace(fullRange, replacedText);
+			});
+			vscode.window.showInformationMessage('句読点を除去しました。');
+		} else {
+			vscode.window.showInformationMessage('置換対象がありません。');
+		}
+	});
+
+	context.subscriptions.push(helloDisposable, insertDisposable, removeDisposable);
 }
 
 // This method is called when your extension is deactivated
