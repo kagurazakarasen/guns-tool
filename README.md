@@ -1,3 +1,12 @@
+# Guns_tool
+
+VS_Code拡張機能を試しに作ってみようかなと。
+ガンズ＆ユニバース（旧群雛）@BCCKS の原稿作成のアシストツールになる予定。
+
+以下、雛型作成時に自動的に作られたREADME
+
+---
+
 # guns-tool README
 
 This is the README for your extension "guns-tool". After writing up a brief description, we recommend including the following sections.
