@@ -16,7 +16,12 @@
       {
         "command": "guns-tool.helloWorld",
         "title": "Hello World"
+      },
+      {
+        "command": "guns-tool.insertSpace",
+        "title": "行頭にスペース挿入"
       }
+
     ]
   },
   "scripts": {
