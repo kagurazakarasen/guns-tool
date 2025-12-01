@@ -23,6 +23,9 @@
       },{
         "command": "guns-tool.removePunctuation",
         "title": "カッコ内末尾の句点削除"
+      },{
+        "command": "guns-tool.tateCombiCharacters",
+        "title": "全角！！、！？等を半角横指定に変換"
       }
 
     ]

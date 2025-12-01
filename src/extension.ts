@@ -98,7 +98,39 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	context.subscriptions.push(helloDisposable, insertDisposable, removeDisposable);
+	const tateCombiDisposable = vscode.commands.registerCommand('guns-tool.tateCombiCharacters', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			vscode.window.showInformationMessage('アクティブなエディタがありません。');
+			return;
+		}
+
+		const document = editor.document;
+		const fullText = document.getText();
+
+		// 全角！！、！？等を半角化し、[tcy]タグで囲む
+		const replacedText = fullText
+			.replace(/！！/g, '[tcy]!![/tcy]')
+			.replace(/！？/g, '[tcy]!?[/tcy]')
+			.replace(/？！/g, '[tcy]?![/tcy]')
+			.replace(/？？/g, '[tcy]??[/tcy]');
+
+		// 変更がある場合のみ置換を実行
+		if (fullText !== replacedText) {
+			const fullRange = new vscode.Range(
+				document.positionAt(0),
+				document.positionAt(fullText.length)
+			);
+			await editor.edit(editBuilder => {
+				editBuilder.replace(fullRange, replacedText);
+			});
+			vscode.window.showInformationMessage('縦組み対応の半角指定を適用しました。');
+		} else {
+			vscode.window.showInformationMessage('置換対象がありません。');
+		}
+	});
+
+	context.subscriptions.push(helloDisposable, insertDisposable, removeDisposable, tateCombiDisposable);
 }
 
 // This method is called when your extension is deactivated
