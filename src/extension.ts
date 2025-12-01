@@ -11,9 +11,6 @@ export function activate(context: vscode.ExtensionContext) {
 	console.log('Congratulations, your extension "guns-tool" is now active!');
 
 	// 実行コマンドを登録する
-	const helloDisposable = vscode.commands.registerCommand('guns-tool.helloWorld', () => {
-		vscode.window.showInformationMessage('Hello World from GUNS TOOL!');
-	});
 
 	const insertDisposable = vscode.commands.registerCommand('guns-tool.insertSpace', async () => {
 		const options: { label: string; description: string; value: string }[] = [
@@ -186,7 +183,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	context.subscriptions.push(helloDisposable, insertDisposable, removeDisposable, tateCombiDisposable, rubyConvertDisposable, rubyConvertReverseDisposable);
+	context.subscriptions.push( insertDisposable, removeDisposable, tateCombiDisposable, rubyConvertDisposable, rubyConvertReverseDisposable);
 }
 
 // This method is called when your extension is deactivated
