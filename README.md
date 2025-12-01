@@ -11,6 +11,7 @@ VS_Code拡張機能を試しに作ってみようかなと。
 ## 実装内容
 
 - コマンド：guns-tool.insertSpace
+
 「行頭にスペース挿入」
 
 機能：
@@ -19,17 +20,23 @@ VS_Code拡張機能を試しに作ってみようかなと。
 
 
 - コマンド：guns-tool.tateCombiCharacters
+
 「全角！！、！？等を半角横指定に変換」
 
 機能：
+
 ！！ → [tcy]!![/tcy]
+
 ！？ → [tcy]!?[/tcy]
+
 ？！ → [tcy]?![/tcy]
+
 ？？ → [tcy]??[/tcy]
 
 
 
 - コマンド：guns-tool.rubyConvertAozoraToBccks
+
 「ルビ変換：青空→BCCKS」
 
 機能：
@@ -41,6 +48,20 @@ VS_Code拡張機能を試しに作ってみようかなと。
 
 入力：  |爆裂《ばくれつ》
 出力：  {爆裂}(ばくれつ)
+
+
+- コマンド：guns-tool.rubyConvertBccksToAozora
+
+「ルビ変換2：BCCKS→青空」
+
+機能：
+
+BCCKS形式 {本文}(ルビ) → 青空文庫形式 |本文《ルビ》 に変換
+
+動作例
+
+入力：  {爆裂}(ばくれつ)
+出力：  |爆裂《ばくれつ》
 
 
 ---

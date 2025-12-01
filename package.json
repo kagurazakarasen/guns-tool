@@ -29,6 +29,10 @@
       },{
         "command": "guns-tool.rubyConvertAozoraToBccks",
         "title": "ルビ変換：青空→BCCKS"
+      },
+      {
+        "command": "guns-tool.rubyConvertBccksToAozora",
+        "title": "ルビ変換2：BCCKS→青空"
       }
 
     ]
