@@ -130,7 +130,35 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	context.subscriptions.push(helloDisposable, insertDisposable, removeDisposable, tateCombiDisposable);
+	const rubyConvertDisposable = vscode.commands.registerCommand('guns-tool.rubyConvertAozoraToBccks', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			vscode.window.showInformationMessage('アクティブなエディタがありません。');
+			return;
+		}
+
+		const document = editor.document;
+		const fullText = document.getText();
+
+		// 青空文庫形式 |本文《ルビ》 → BCCKS形式 {本文}(ルビ) に変換
+		const replacedText = fullText.replace(/\|([^《]*?)《([^》]*?)》/g, '{$1}($2)');
+
+		// 変更がある場合のみ置換を実行
+		if (fullText !== replacedText) {
+			const fullRange = new vscode.Range(
+				document.positionAt(0),
+				document.positionAt(fullText.length)
+			);
+			await editor.edit(editBuilder => {
+				editBuilder.replace(fullRange, replacedText);
+			});
+			vscode.window.showInformationMessage('ルビを青空文庫形式からBCCKS形式に変換しました。');
+		} else {
+			vscode.window.showInformationMessage('置換対象がありません。');
+		}
+	});
+
+	context.subscriptions.push(helloDisposable, insertDisposable, removeDisposable, tateCombiDisposable, rubyConvertDisposable);
 }
 
 // This method is called when your extension is deactivated

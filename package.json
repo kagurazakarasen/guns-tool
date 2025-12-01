@@ -26,6 +26,9 @@
       },{
         "command": "guns-tool.tateCombiCharacters",
         "title": "全角！！、！？等を半角横指定に変換"
+      },{
+        "command": "guns-tool.rubyConvertAozoraToBccks",
+        "title": "ルビ変換：青空→BCCKS"
       }
 
     ]
