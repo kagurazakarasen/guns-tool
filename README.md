@@ -11,52 +11,51 @@ VS_Code拡張機能を利用したガンズ＆ユニバース（旧群雛）@BCC
  
 # コマンドと各機能
 
-* コマンド：「行頭にスペース挿入」
+## コマンド：「行頭にスペース挿入」
  * guns-tool.insertSpace
 
-* 機能
+### 機能
  * 各行の行頭にスペースを挿入する。「や『などの記号の場合はキャンセルされる。
 
-
-
-- コマンド：guns-tool.tateCombiCharacters
+## コマンド：guns-tool.tateCombiCharacters
 
 「全角！！、！？等を半角横指定に変換」
 
-* 機能：
+### 機能：
  * ！！ → [tcy]!![/tcy]
  * ！？ → [tcy]!?[/tcy]
  * ？！ → [tcy]?![/tcy]
  * ？？ → [tcy]??[/tcy]
 
 
-
-- コマンド：guns-tool.rubyConvertAozoraToBccks
+## コマンド：guns-tool.rubyConvertAozoraToBccks
 
 「ルビ変換：青空→BCCKS」
 
-機能：
+### 機能：
 
-青空文庫形式 |本文《ルビ》 → BCCKS形式 {本文}(ルビ) に変換
-正規表現で複数の変換をサポート
+* 青空文庫形式 |本文《ルビ》 → BCCKS形式 {本文}(ルビ) に変換
+* 正規表現で複数の変換をサポート
 
-動作例
+#### 動作例
 
 入力：  |爆裂《ばくれつ》
+
 出力：  {爆裂}(ばくれつ)
 
 
-- コマンド：guns-tool.rubyConvertBccksToAozora
+## コマンド：guns-tool.rubyConvertBccksToAozora
 
 「ルビ変換2：BCCKS→青空」
 
-機能：
+### 機能：
 
 BCCKS形式 {本文}(ルビ) → 青空文庫形式 |本文《ルビ》 に変換
 
-動作例
+#### 動作例
 
 入力：  {爆裂}(ばくれつ)
+
 出力：  |爆裂《ばくれつ》
 
 
