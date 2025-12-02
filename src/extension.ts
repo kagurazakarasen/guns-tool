@@ -291,10 +291,10 @@ export function activate(context: vscode.ExtensionContext) {
 		const fullText = document.getText();
 
 		// 「！」または「？」の直後に空白がない場合、全角スペースを挿入する
-		// ただし直後の文字が閉じ括弧/引用符（例：」『）】〉》など）または他の punctuation（!！?？）である場合は挿入しない
+		// ただし直後の文字が閉じ括弧/引用符（例：」『）】〉》など）、[（縦中横タグ開始）、または他の punctuation（!！?？）である場合は挿入しない
 		// 既に空白や改行がある場合はスキップされる（正規表現で次の文字が空白でない場合のみマッチ）
 		// 対象は全角と半角の ! と ? を含む
-		const replacedText = fullText.replace(/([!！?？])(?![」『）〕】〉》!！?？])([^\s\u3000\n\r])/gu, '$1　$2');
+		const replacedText = fullText.replace(/([!！?？])(?![」『）〕】〉》\[!！?？])([^\s\u3000\n\r])/gu, '$1　$2');
 
 		if (fullText !== replacedText) {
 			const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(fullText.length));
@@ -308,6 +308,43 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	context.subscriptions.push(spaceAfterPunctDisposable);
+
+	const applyAllFixesDisposable = vscode.commands.registerCommand('guns-tool.applyAllFixes', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			vscode.window.showInformationMessage('アクティブなエディタがありません。');
+			return;
+		}
+
+		// 実行順序：insertSpace → removePunctuation → tateCombiCharacters → rubyConvertAozoraToBccks → 
+		// fullwidthSingleAlphabet → fullwidthAcronym → tateChuyokoTwoDigit → fixEllipsis → spaceAfterPunct
+		const commands = [
+			'guns-tool.insertSpace',
+			'guns-tool.removePunctuation',
+			'guns-tool.tateCombiCharacters',
+			'guns-tool.rubyConvertAozoraToBccks',
+			'guns-tool.fullwidthSingleAlphabet',
+			'guns-tool.fullwidthAcronym',
+			'guns-tool.tateChuyokoTwoDigit',
+			'guns-tool.fixEllipsis',
+			'guns-tool.spaceAfterPunct'
+		];
+
+		let successCount = 0;
+		for (const command of commands) {
+			try {
+				await vscode.commands.executeCommand(command);
+				successCount++;
+			} catch (err) {
+				vscode.window.showErrorMessage(`コマンド ${command} の実行に失敗しました。`);
+				break;
+			}
+		}
+
+		vscode.window.showInformationMessage(`全修正を実行完了: ${successCount}/${commands.length} コマンド実行`);
+	});
+
+	context.subscriptions.push(applyAllFixesDisposable);
 }
 
 // This method is called when your extension is deactivated
