@@ -52,6 +52,10 @@
       {
         "command": "guns-tool.spaceAfterPunct",
         "title": "感嘆符後にスペース"
+      },
+      {
+        "command": "guns-tool.applyAllFixes",
+        "title": "全修正を一括で行う"
       }
     ]
   },
