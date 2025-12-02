@@ -1,4 +1,4 @@
-# Guns_tool README
+# VS_Code用拡張機能： Guns_tool 
 
 VS_Code拡張機能を利用したガンズ＆ユニバース（旧群雛）@BCCKS の原稿作成のアシストツール
 
