@@ -16,22 +16,24 @@
       {
         "command": "guns-tool.insertSpace",
         "title": "行頭にスペース挿入"
-      },{
+      },
+      {
         "command": "guns-tool.removePunctuation",
         "title": "カッコ内末尾の句点削除"
-      },{
+      },
+      {
         "command": "guns-tool.tateCombiCharacters",
         "title": "全角！！、！？等を半角横指定に変換"
-      },{
+      },
+      {
         "command": "guns-tool.rubyConvertAozoraToBccks",
         "title": "ルビ変換：青空→BCCKS"
       },
       {
         "command": "guns-tool.rubyConvertBccksToAozora",
         "title": "ルビ変換2：BCCKS→青空"
-      }
-
-      ,{
+      },
+      {
         "command": "guns-tool.fullwidthSingleAlphabet",
         "title": "アルファベット単独文字を全角に"
       },
@@ -46,8 +48,11 @@
       {
         "command": "guns-tool.fixEllipsis",
         "title": "三点リーダ修正"
+      },
+      {
+        "command": "guns-tool.spaceAfterPunct",
+        "title": "感嘆符後にスペース"
       }
-
     ]
   },
   "scripts": {
@@ -62,16 +67,17 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.106.1",
     "@types/mocha": "^10.0.10",
     "@types/node": "22.x",
-    "typescript-eslint": "^8.46.3",
-    "eslint": "^9.39.1",
-    "typescript": "^5.9.3",
-    "ts-loader": "^9.5.4",
-    "webpack": "^5.102.1",
-    "webpack-cli": "^6.0.1",
+    "@types/vscode": "^1.106.1",
     "@vscode/test-cli": "^0.0.12",
-    "@vscode/test-electron": "^2.5.2"
+    "@vscode/test-electron": "^2.5.2",
+    "eslint": "^9.39.1",
+    "mocha": "^11.7.5",
+    "ts-loader": "^9.5.4",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.3",
+    "webpack": "^5.102.1",
+    "webpack-cli": "^6.0.1"
   }
 }

@@ -279,6 +279,35 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	context.subscriptions.push( insertDisposable, removeDisposable, tateCombiDisposable, rubyConvertDisposable, rubyConvertReverseDisposable, fullwidthDisposable, acronymDisposable, tatechuyokoDigitDisposable, ellipsisFixDisposable);
+
+	const spaceAfterPunctDisposable = vscode.commands.registerCommand('guns-tool.spaceAfterPunct', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			vscode.window.showInformationMessage('アクティブなエディタがありません。');
+			return;
+		}
+
+		const document = editor.document;
+		const fullText = document.getText();
+
+		// 「！」または「？」の直後に空白がない場合、全角スペースを挿入する
+		// ただし直後の文字が閉じ括弧/引用符（例：」『）】〉》など）または他の punctuation（!！?？）である場合は挿入しない
+		// 既に空白や改行がある場合はスキップされる（正規表現で次の文字が空白でない場合のみマッチ）
+		// 対象は全角と半角の ! と ? を含む
+		const replacedText = fullText.replace(/([!！?？])(?![」『）〕】〉》!！?？])([^\s\u3000\n\r])/gu, '$1　$2');
+
+		if (fullText !== replacedText) {
+			const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(fullText.length));
+			await editor.edit(editBuilder => {
+				editBuilder.replace(fullRange, replacedText);
+			});
+			vscode.window.showInformationMessage('感嘆符/疑問符の後にスペースを挿入しました。');
+		} else {
+			vscode.window.showInformationMessage('変換対象が見つかりませんでした。');
+		}
+	});
+
+	context.subscriptions.push(spaceAfterPunctDisposable);
 }
 
 // This method is called when your extension is deactivated
