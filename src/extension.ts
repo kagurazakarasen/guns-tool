@@ -25,6 +25,10 @@ export function activate(context: vscode.ExtensionContext) {
 		// 行頭スキップ対象文字判定
 		const skipChars = ['『', '「', '【', '［', '　', ' ', '（', '〈', '《', '〔', '｛', '〖', '〘', '〚', '＃', '#', '＊', '*', '◆', '◇', '○', '●', '◎', '△', '▲', '▼', '▽', '～', '…', '‥', '・', '＝', '=', '≪', '―', '-', '0','1','2','3','4','5','6','7','8','9'];
 		const shouldSkip = (lineText: string): boolean => {
+			// 改行のみの行はスキップ
+			if (lineText.trim() === '') {
+				return true;
+			}
 			const trimmed = lineText.trimStart();
 			return skipChars.some(char => trimmed.startsWith(char));
 		};
