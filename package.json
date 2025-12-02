@@ -2,7 +2,7 @@
   "name": "guns-tool",
   "displayName": "GUNS TOOL",
   "description": "Guns tool in VSCode.",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "publisher": "RASEN-WORKS",
   "icon": "icon.png",
   "repository": {

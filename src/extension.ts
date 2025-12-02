@@ -70,7 +70,7 @@ export function activate(context: vscode.ExtensionContext) {
 			});
 			vscode.window.showInformationMessage('句読点を除去しました。');
 		} else {
-			vscode.window.showInformationMessage('置換対象がありません。');
+			vscode.window.showInformationMessage('除去すべき句読点が、見つかりりませんでした。');
 		}
 	});
 
@@ -102,7 +102,7 @@ export function activate(context: vscode.ExtensionContext) {
 			});
 			vscode.window.showInformationMessage('縦組み対応の半角指定を適用しました。');
 		} else {
-			vscode.window.showInformationMessage('置換対象がありません。');
+			vscode.window.showInformationMessage('！！、？？等の置換対象がありません。');
 		}
 	});
 
@@ -130,7 +130,7 @@ export function activate(context: vscode.ExtensionContext) {
 			});
 			vscode.window.showInformationMessage('ルビを青空文庫形式からBCCKS形式に変換しました。');
 		} else {
-			vscode.window.showInformationMessage('置換対象がありません。');
+			vscode.window.showInformationMessage('青空文庫形式ルビ置換対象がありません。');
 		}
 	});
 
@@ -158,7 +158,7 @@ export function activate(context: vscode.ExtensionContext) {
 			});
 			vscode.window.showInformationMessage('ルビをBCCKS形式から青空文庫形式に変換しました。');
 		} else {
-			vscode.window.showInformationMessage('置換対象がありません。');
+			vscode.window.showInformationMessage('BCCKS形式ルビ置換対象がありません。');
 		}
 	});
 
@@ -189,7 +189,7 @@ export function activate(context: vscode.ExtensionContext) {
 			});
 			vscode.window.showInformationMessage('単独のアルファベットを全角化しました。');
 		} else {
-			vscode.window.showInformationMessage('変換対象が見つかりませんでした。');
+			vscode.window.showInformationMessage('単独アルファベットの変換対象が見つかりませんでした。');
 		}
 	});
 
@@ -218,7 +218,7 @@ export function activate(context: vscode.ExtensionContext) {
 			});
 			vscode.window.showInformationMessage('大文字アルファベット略称を全角化しました。');
 		} else {
-			vscode.window.showInformationMessage('変換対象が見つかりませんでした。');
+			vscode.window.showInformationMessage('大文字アルファベット略称変換対象が見つかりませんでした。');
 		}
 	});
 
@@ -246,7 +246,7 @@ export function activate(context: vscode.ExtensionContext) {
 			});
 			vscode.window.showInformationMessage('2ケタ数値を縦中横タグで囲みました。');
 		} else {
-			vscode.window.showInformationMessage('変換対象が見つかりませんでした。');
+			vscode.window.showInformationMessage('2ケタ数値の変換対象が見つかりませんでした。');
 		}
 	});
 
@@ -274,7 +274,7 @@ export function activate(context: vscode.ExtensionContext) {
 			});
 			vscode.window.showInformationMessage('三点リーダを統一しました。');
 		} else {
-			vscode.window.showInformationMessage('変換対象が見つかりませんでした。');
+			vscode.window.showInformationMessage('三点リーダ変換対象が見つかりませんでした。');
 		}
 	});
 
@@ -303,7 +303,7 @@ export function activate(context: vscode.ExtensionContext) {
 			});
 			vscode.window.showInformationMessage('感嘆符/疑問符の後にスペースを挿入しました。');
 		} else {
-			vscode.window.showInformationMessage('変換対象が見つかりませんでした。');
+			vscode.window.showInformationMessage('感嘆符/疑問符の変換対象が見つかりませんでした。');
 		}
 	});
 

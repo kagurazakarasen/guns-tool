@@ -1,10 +1,5 @@
 # Change Log
 
-All notable changes to the "guns-tool" extension will be documented in this file.
-
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
 - v0.0.1 Initial set-up (Hello world )
 - v0.0.2 行頭にスペース挿入 機能を追加
 - v0.0.3 カッコ内末尾の句点削除 機能を追加
@@ -17,6 +12,14 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - v0.0.7 三点リーダ修正 機能を追加
 - v0.0.8 感嘆符後にスペース 機能を追加
 - v0.1.0 一括実行まで機能を追加
-
-
 - Initial release
+- v0.1.1 マーケットプレイスで公開
+- v0.1.2 実行時のインフォメーション表記を修正
+
+---
+Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+
+## Unreleased
+- 青空文庫形式のルビ（｜なし）に正しく対応させたい
+
+### Added
