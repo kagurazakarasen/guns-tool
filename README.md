@@ -1,8 +1,8 @@
-# VS_Code用拡張機能： Guns_tool 
+# Guns_tool : BCCKSアップ用・原稿整形アシストツール
 
 ![GUNS TOOL](icon.png)
 
-VS_Code拡張機能を利用したガンズ＆ユニバース（旧群雛）@BCCKS の原稿作成のアシストツール
+VS_Code拡張機能を利用したガンズ＆ユニバース（旧群雛）@BCCKS用の原稿作成のアシストツールです。
 
 生原稿テキストファイルを提出用に成形します。
 
@@ -192,26 +192,14 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 
 入力: 驚いた！[tcy]!![/tcy]ね → 出力: 驚いた！[tcy]!![/tcy]ね（[の前なのでスペース挿入なし）
 
----
-
 
 ---
 ---
 
-
-## Requirements
-
-
-
-## Extension Settings
-
-
-## Known Issues
 
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
 
 ### v0.0.1
 - Initial set-up (Hello world )
@@ -236,28 +224,10 @@ Users appreciate release notes as you update your extension.
 - 一括実行まで機能を追加
 - アイコン、ライセンスファイルの作成、追加
 - guns-tool-0.1.0.vsix パッケージを作成。
-
+- マーケットプレイスで公開してみる。
 
 ---
 
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
 
 ## License
 
