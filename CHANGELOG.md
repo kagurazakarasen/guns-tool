@@ -5,5 +5,18 @@ All notable changes to the "guns-tool" extension will be documented in this file
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 ## [Unreleased]
+- v0.0.1 Initial set-up (Hello world )
+- v0.0.2 行頭にスペース挿入 機能を追加
+- v0.0.3 カッコ内末尾の句点削除 機能を追加
+- v0.0.4 全角！！、！？等を半角横指定に変換 機能を追加
+- v0.0.5 ルビ変換：青空→BCCKS 機能を追加
+- v0.0.51 ルビ変換2：BCCKS→青空 機能を追加
+- v0.0.6 アルファベット単独文字を全角に 機能を追加
+- v0.0.61 アルファベット略称（3文字以下）を全角に 機能を追加
+- v0.0.62 半角数値（２ケタ）を縦中横に 機能を追加
+- v0.0.7 三点リーダ修正 機能を追加
+- v0.0.8 感嘆符後にスペース 機能を追加
+- v0.1.0 一括実行まで機能を追加
+
 
 - Initial release

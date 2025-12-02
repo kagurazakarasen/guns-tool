@@ -1,5 +1,7 @@
 # VS_Code用拡張機能： Guns_tool 
 
+![GUNS TOOL](icon.png)
+
 VS_Code拡張機能を利用したガンズ＆ユニバース（旧群雛）@BCCKS の原稿作成のアシストツール
 
 生原稿テキストファイルを提出用に成形します。
@@ -21,14 +23,44 @@ https://www.aiajp.org/2014/01/gunsu_21.html
 # コマンドと各機能
 ---
 
-## コマンド：「行頭にスペース挿入」
+## コマンド：「GTool:全修正を一括で行う」
+ * guns-tool.applyAllFixes
+
+### 機能：
+
+ * 以下の全てのコマンドを順序立てて一括で実行します（BCCKSルビを青空文庫形式に変換する rubyConvertBccksToAozora は除外）。
+
+### 実行順序：
+
+1. 行頭にスペース挿入（insertSpace）
+2. カッコ内末尾の句点削除（removePunctuation）
+3. 全角！！、！？等を半角横指定に変換（tateCombiCharacters）
+4. ルビ変換：青空→BCCKS（rubyConvertAozoraToBccks）
+5. アルファベット単独文字を全角に（fullwidthSingleAlphabet）
+6. アルファベット略称（3文字以下）を全角に（fullwidthAcronym）
+7. 半角数値（２ケタ）を縦中横に（tateChuyokoTwoDigit）
+8. 三点リーダ修正（fixEllipsis）
+9. 感嘆符/疑問符の後にスペース挿入（spaceAfterPunct）
+
+### 使用例
+
+コマンドパレット（Ctrl+Shift+P）から「全修正を一括で行う」を実行すると、上記の9つのコマンドが順番に実行されます。
+
+BCCKSにアップする前にこのコマンドを一度実行すると一気に整形される（予定）です。
+
+
+---
+# 以下、個別のコマンド（一括コマンドから呼び出されています）
+---
+
+## コマンド：「GTool:行頭にスペース挿入」
  * guns-tool.insertSpace
 
 ### 機能
  * 各行の行頭にスペースを挿入する。「や『などの記号の場合はキャンセルされる。
 
 ---
-## コマンド：「全角！！、！？等を半角横指定に変換」
+## コマンド：「GTool:全角！！、！？等を半角横指定に変換」
  * guns-tool.tateCombiCharacters
 
 
@@ -42,7 +74,7 @@ https://www.aiajp.org/2014/01/gunsu_21.html
 * ？？ → [tcy]??[/tcy]
 
 ---
-## コマンド：「ルビ変換：青空→BCCKS」
+## コマンド：「GTool:ルビ変換：青空→BCCKS」
  * guns-tool.rubyConvertAozoraToBccks
 
 
@@ -58,7 +90,7 @@ https://www.aiajp.org/2014/01/gunsu_21.html
 出力：  {爆裂}(ばくれつ)
 
 ---
-## コマンド：「ルビ変換2：BCCKS→青空」
+## コマンド：「GTool:ルビ変換2：BCCKS→青空」
  * guns-tool.rubyConvertBccksToAozora
 
 ### 機能：
@@ -74,7 +106,7 @@ https://www.aiajp.org/2014/01/gunsu_21.html
 
 ---
 
-## コマンド：「アルファベット単独文字を全角に」
+## コマンド：「GTool:アルファベット単独文字を全角に」
  * guns-tool.fullwidthSingleAlphabet
 
 ### 機能：
@@ -93,7 +125,7 @@ https://www.aiajp.org/2014/01/gunsu_21.html
 
 ---
 
-## コマンド：「アルファベット略称（3文字以下）を全角に」
+## コマンド：「GTool:アルファベット略称（3文字以下）を全角に」
  * guns-tool.fullwidthAcronym
 
 ### 機能：
@@ -110,7 +142,7 @@ https://www.aiajp.org/2014/01/gunsu_21.html
 
 ---
 
-## コマンド：「半角数値（２ケタ）を縦中横に」
+## コマンド：「GTool:半角数値（２ケタ）を縦中横に」
  * guns-tool.tateChuyokoTwoDigit
 
 ### 機能：
@@ -125,7 +157,7 @@ https://www.aiajp.org/2014/01/gunsu_21.html
 
 ---
 
-## コマンド：「三点リーダ修正」
+## コマンド：「GTool:三点リーダ修正」
  * guns-tool.fixEllipsis
 
 ### 機能：
@@ -142,7 +174,7 @@ https://www.aiajp.org/2014/01/gunsu_21.html
 
 ---
 
-## コマンド：「感嘆符/疑問符の後にスペース挿入」
+## コマンド：「GTool:感嘆符/疑問符の後にスペース挿入」
  * guns-tool.spaceAfterPunct
 
 ### 機能：
@@ -162,28 +194,6 @@ https://www.aiajp.org/2014/01/gunsu_21.html
 
 ---
 
-## コマンド：「全修正を一括で行う」
- * guns-tool.applyAllFixes
-
-### 機能：
-
- * 以下の全てのコマンドを順序立てて一括で実行します（rubyConvertBccksToAozora は除外）。
-
-### 実行順序：
-
-1. 行頭にスペース挿入（insertSpace）
-2. カッコ内末尾の句点削除（removePunctuation）
-3. 全角！！、！？等を半角横指定に変換（tateCombiCharacters）
-4. ルビ変換：青空→BCCKS（rubyConvertAozoraToBccks）
-5. アルファベット単独文字を全角に（fullwidthSingleAlphabet）
-6. アルファベット略称（3文字以下）を全角に（fullwidthAcronym）
-7. 半角数値（２ケタ）を縦中横に（tateChuyokoTwoDigit）
-8. 三点リーダ修正（fixEllipsis）
-9. 感嘆符/疑問符の後にスペース挿入（spaceAfterPunct）
-
-### 使用例
-
-コマンドパレット（Ctrl+Shift+P）から「全修正を一括で行う」を実行すると、上記の9つのコマンドが順番に実行されます。
 
 ---
 

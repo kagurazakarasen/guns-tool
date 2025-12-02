@@ -2,7 +2,8 @@
   "name": "guns-tool",
   "displayName": "GUNS TOOL",
   "description": "Guns tool in VSCode.",
-  "version": "0.0.1",
+  "version": "0.1.0",
+  "icon": "icon.png",
   "engines": {
     "vscode": "^1.106.1"
   },
@@ -15,47 +16,47 @@
     "commands": [
       {
         "command": "guns-tool.insertSpace",
-        "title": "行頭にスペース挿入"
+        "title": "GTool:行頭にスペース挿入"
       },
       {
         "command": "guns-tool.removePunctuation",
-        "title": "カッコ内末尾の句点削除"
+        "title": "GTool:カッコ内末尾の句点削除"
       },
       {
         "command": "guns-tool.tateCombiCharacters",
-        "title": "全角！！、！？等を半角横指定に変換"
+        "title": "GTool:全角！！、！？等を半角横指定に変換"
       },
       {
         "command": "guns-tool.rubyConvertAozoraToBccks",
-        "title": "ルビ変換：青空→BCCKS"
+        "title": "GTool:ルビ変換：青空→BCCKS"
       },
       {
         "command": "guns-tool.rubyConvertBccksToAozora",
-        "title": "ルビ変換2：BCCKS→青空"
+        "title": "GTool:ルビ変換2：BCCKS→青空"
       },
       {
         "command": "guns-tool.fullwidthSingleAlphabet",
-        "title": "アルファベット単独文字を全角に"
+        "title": "GTool:アルファベット単独文字を全角に"
       },
       {
         "command": "guns-tool.fullwidthAcronym",
-        "title": "アルファベット略称（3文字以下）を全角に"
+        "title": "GTool:アルファベット略称（3文字以下）を全角に"
       },
       {
         "command": "guns-tool.tateChuyokoTwoDigit",
-        "title": "半角数値（２ケタ）を縦中横に"
+        "title": "GTool:半角数値（２ケタ）を縦中横に"
       },
       {
         "command": "guns-tool.fixEllipsis",
-        "title": "三点リーダ修正"
+        "title": "GTool:三点リーダ修正"
       },
       {
         "command": "guns-tool.spaceAfterPunct",
-        "title": "感嘆符後にスペース"
+        "title": "GTool:感嘆符後にスペース"
       },
       {
         "command": "guns-tool.applyAllFixes",
-        "title": "全修正を一括で行う"
+        "title": "GTool:全修正を一括で行う"
       }
     ]
   },
