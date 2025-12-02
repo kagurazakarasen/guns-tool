@@ -4,6 +4,10 @@
   "description": "Guns tool in VSCode.",
   "version": "0.1.0",
   "icon": "icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kagurazakarasen/guns-tool"
+  },
   "engines": {
     "vscode": "^1.106.1"
   },

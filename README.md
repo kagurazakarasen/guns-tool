@@ -235,6 +235,7 @@ Users appreciate release notes as you update your extension.
 ### v0.1.0
 - 一括実行まで機能を追加
 - アイコン、ライセンスファイルの作成、追加
+- guns-tool-0.1.0.vsix パッケージを作成。
 
 
 ---
