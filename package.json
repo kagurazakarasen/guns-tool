@@ -31,6 +31,23 @@
         "title": "ルビ変換2：BCCKS→青空"
       }
 
+      ,{
+        "command": "guns-tool.fullwidthSingleAlphabet",
+        "title": "アルファベット単独文字を全角に"
+      },
+      {
+        "command": "guns-tool.fullwidthAcronym",
+        "title": "アルファベット略称（3文字以下）を全角に"
+      },
+      {
+        "command": "guns-tool.tateChuyokoTwoDigit",
+        "title": "半角数値（２ケタ）を縦中横に"
+      },
+      {
+        "command": "guns-tool.fixEllipsis",
+        "title": "三点リーダ修正"
+      }
+
     ]
   },
   "scripts": {

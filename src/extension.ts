@@ -162,7 +162,123 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	context.subscriptions.push( insertDisposable, removeDisposable, tateCombiDisposable, rubyConvertDisposable, rubyConvertReverseDisposable);
+	const fullwidthDisposable = vscode.commands.registerCommand('guns-tool.fullwidthSingleAlphabet', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			vscode.window.showInformationMessage('アクティブなエディタがありません。');
+			return;
+		}
+
+		const document = editor.document;
+		const fullText = document.getText();
+
+		// 日本語文字の間に単独で現れる英数字（半角アルファベット・半角数字）を全角化する
+		// 前後に任意の空白が挟まれていてもマッチする。例: '漢字 A 漢字' -> '漢字 Ａ 漢字', '漢字 1 漢字' -> '漢字 １ 漢字'
+		const replacedText = fullText.replace(/([\u3000-\u30FF\u4E00-\u9FFF])(\s*)([A-Za-z0-9])(\s*)([\u3000-\u30FF\u4E00-\u9FFF])/gu,
+			(m, g1, s1, ch, s2, g5) => {
+				// ASCIIの英数字を全角にマッピング（A -> Ａ, 0 -> ０）
+				const code = (ch as string).charCodeAt(0);
+				const full = String.fromCharCode(code + 0xFEE0);
+				return `${g1}${s1}${full}${s2}${g5}`;
+			});
+
+		if (fullText !== replacedText) {
+			const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(fullText.length));
+			await editor.edit(editBuilder => {
+				editBuilder.replace(fullRange, replacedText);
+			});
+			vscode.window.showInformationMessage('単独のアルファベットを全角化しました。');
+		} else {
+			vscode.window.showInformationMessage('変換対象が見つかりませんでした。');
+		}
+	});
+
+	const acronymDisposable = vscode.commands.registerCommand('guns-tool.fullwidthAcronym', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			vscode.window.showInformationMessage('アクティブなエディタがありません。');
+			return;
+		}
+
+		const document = editor.document;
+		const fullText = document.getText();
+
+		// 日本語文字の間に単独で現れる大文字アルファベット1～3文字の略称を全角化する
+		// 例：'漢字 ABC 漢字' -> '漢字 ＡＢＣ 漢字'、'漢字 AI 漢字' -> '漢字 ＡＩ 漢字'
+		const replacedText = fullText.replace(/([\u3000-\u30FF\u4E00-\u9FFF])(\s*)([A-Z]{1,3})(\s*)([\u3000-\u30FF\u4E00-\u9FFF])/gu,
+			(m, g1, s1, acronym, s2, g5) => {
+				const fullAcronym = (acronym as string).split('').map(ch => String.fromCharCode(ch.charCodeAt(0) + 0xFEE0)).join('');
+				return `${g1}${s1}${fullAcronym}${s2}${g5}`;
+			});
+
+		if (fullText !== replacedText) {
+			const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(fullText.length));
+			await editor.edit(editBuilder => {
+				editBuilder.replace(fullRange, replacedText);
+			});
+			vscode.window.showInformationMessage('大文字アルファベット略称を全角化しました。');
+		} else {
+			vscode.window.showInformationMessage('変換対象が見つかりませんでした。');
+		}
+	});
+
+	const tatechuyokoDigitDisposable = vscode.commands.registerCommand('guns-tool.tateChuyokoTwoDigit', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			vscode.window.showInformationMessage('アクティブなエディタがありません。');
+			return;
+		}
+
+		const document = editor.document;
+		const fullText = document.getText();
+
+		// 日本語文字の間に単独で現れる2ケタの半角数値を[tcy]で囲む
+		// 例：'漢字 12 漢字' -> '漢字 [tcy]12[/tcy] 漢字'
+		const replacedText = fullText.replace(/([\u3000-\u30FF\u4E00-\u9FFF])(\s*)(\d{2})(\s*)([\u3000-\u30FF\u4E00-\u9FFF])/gu,
+			(m, g1, s1, digits, s2, g5) => {
+				return `${g1}${s1}[tcy]${digits}[/tcy]${s2}${g5}`;
+			});
+
+		if (fullText !== replacedText) {
+			const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(fullText.length));
+			await editor.edit(editBuilder => {
+				editBuilder.replace(fullRange, replacedText);
+			});
+			vscode.window.showInformationMessage('2ケタ数値を縦中横タグで囲みました。');
+		} else {
+			vscode.window.showInformationMessage('変換対象が見つかりませんでした。');
+		}
+	});
+
+	const ellipsisFixDisposable = vscode.commands.registerCommand('guns-tool.fixEllipsis', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			vscode.window.showInformationMessage('アクティブなエディタがありません。');
+			return;
+		}
+
+		const document = editor.document;
+		const fullText = document.getText();
+
+		// 「・・・」「‥」「…」の連続を「……」に統一する
+		// 単独の「・」はスキップする。「‥」「…」の単独や複数、「・」が2文字以上は対象
+		// パターン1: 「‥」「…」の1文字以上の連続
+		// パターン2: 「・」が2文字以上の連続
+		let replacedText = fullText.replace(/[‥…]+/g, '……');
+		replacedText = replacedText.replace(/・{2,}/g, '……');
+
+		if (fullText !== replacedText) {
+			const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(fullText.length));
+			await editor.edit(editBuilder => {
+				editBuilder.replace(fullRange, replacedText);
+			});
+			vscode.window.showInformationMessage('三点リーダを統一しました。');
+		} else {
+			vscode.window.showInformationMessage('変換対象が見つかりませんでした。');
+		}
+	});
+
+	context.subscriptions.push( insertDisposable, removeDisposable, tateCombiDisposable, rubyConvertDisposable, rubyConvertReverseDisposable, fullwidthDisposable, acronymDisposable, tatechuyokoDigitDisposable, ellipsisFixDisposable);
 }
 
 // This method is called when your extension is deactivated
