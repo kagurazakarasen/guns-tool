@@ -29,8 +29,9 @@ export function activate(context: vscode.ExtensionContext) {
 			if (lineText.trim() === '') {
 				return true;
 			}
-			const trimmed = lineText.trimStart();
-			return skipChars.some(char => trimmed.startsWith(char));
+			// 行頭の最初の文字（前後の空白を除かない）を確認
+			const firstChar = lineText.length > 0 ? lineText[0] : '';
+			return skipChars.includes(firstChar);
 		};
 
 		await editor.edit(editBuilder => {
