@@ -196,59 +196,46 @@ BCCKSにアップする前にこのコマンドを一度実行すると一気に
 
 
 ---
-
-以下、雛型作成時に自動的に作られたREADME
-
 ---
 
-# guns-tool README
-
-This is the README for your extension "guns-tool". After writing up a brief description, we recommend including the following sections.
-
-## Features
-
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
 
 ## Release Notes
 
 Users appreciate release notes as you update your extension.
 
-### 1.0.0
+### v0.0.1
+- Initial set-up (Hello world )
+### v0.0.2
+- 行頭にスペース挿入 機能を追加
+### v0.0.3
+- カッコ内末尾の句点削除 機能を追加
+### v0.0.4
+- 全角！！、！？等を半角横指定に変換 機能を追加
+### v0.0.5
+- ルビ変換：青空→BCCKS 機能を追加
+- ルビ変換2：BCCKS→青空 機能を追加
+### v0.0.6
+- アルファベット単独文字を全角に 機能を追加
+- アルファベット略称（3文字以下）を全角に 機能を追加
+- 半角数値（２ケタ）を縦中横に 機能を追加
+### v0.0.7
+- 三点リーダ修正 機能を追加
+### v0.0.8
+- 感嘆符後にスペース 機能を追加
+### v0.1.0
+- 一括実行まで機能を追加
+- アイコン、ライセンスファイルの作成、追加
 
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
 
 ---
 
@@ -270,5 +257,9 @@ You can author your README using Visual Studio Code. Here are some useful editor
 
 * [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
 * [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+
+## License
+
+This extension is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 **Enjoy!**
