@@ -222,6 +222,43 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
+	const fullwidthDigitsToKanjiDisposable = vscode.commands.registerCommand('guns-tool.fullwidthDigitsToKanji', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			vscode.window.showInformationMessage('アクティブなエディタがありません。');
+			return;
+		}
+
+		const document = editor.document;
+		const fullText = document.getText();
+
+		// 全角数字（０〜９）を漢数字に置換する（０->〇, １->一, ... ９->九）
+		const map: { [k: string]: string } = {
+			'０': '〇',
+			'１': '一',
+			'２': '二',
+			'３': '三',
+			'４': '四',
+			'５': '五',
+			'６': '六',
+			'７': '七',
+			'８': '八',
+			'９': '九'
+		};
+
+		const replacedText = fullText.replace(/[０-９]/g, ch => map[ch] || ch);
+
+		if (fullText !== replacedText) {
+			const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(fullText.length));
+			await editor.edit(editBuilder => {
+				editBuilder.replace(fullRange, replacedText);
+			});
+			vscode.window.showInformationMessage('全角数字を漢数字に変換しました。');
+		} else {
+			vscode.window.showInformationMessage('変換対象の全角数字が見つかりませんでした。');
+		}
+	});
+
 	const tatechuyokoDigitDisposable = vscode.commands.registerCommand('guns-tool.tateChuyokoTwoDigit', async () => {
 		const editor = vscode.window.activeTextEditor;
 		if (!editor) {
@@ -278,7 +315,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	context.subscriptions.push( insertDisposable, removeDisposable, tateCombiDisposable, rubyConvertDisposable, rubyConvertReverseDisposable, fullwidthDisposable, acronymDisposable, tatechuyokoDigitDisposable, ellipsisFixDisposable);
+	context.subscriptions.push( insertDisposable, removeDisposable, tateCombiDisposable, rubyConvertDisposable, rubyConvertReverseDisposable, fullwidthDisposable, acronymDisposable, fullwidthDigitsToKanjiDisposable, tatechuyokoDigitDisposable, ellipsisFixDisposable);
 
 	const spaceAfterPunctDisposable = vscode.commands.registerCommand('guns-tool.spaceAfterPunct', async () => {
 		const editor = vscode.window.activeTextEditor;

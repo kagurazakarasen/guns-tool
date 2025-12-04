@@ -2,7 +2,7 @@
   "name": "guns-tool",
   "displayName": "GUNS TOOL",
   "description": "Guns tool in VSCode.",
-  "version": "0.1.21",
+  "version": "0.1.3",
   "publisher": "RASEN-WORKS",
   "icon": "icon.png",
   "repository": {
@@ -58,6 +58,10 @@
       {
         "command": "guns-tool.spaceAfterPunct",
         "title": "GTool:感嘆符後にスペース"
+      },
+      {
+        "command": "guns-tool.fullwidthDigitsToKanji",
+        "title": "GTool:全角数字を漢数字に"
       },
       {
         "command": "guns-tool.applyAllFixes",
