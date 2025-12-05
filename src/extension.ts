@@ -315,7 +315,39 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	context.subscriptions.push( insertDisposable, removeDisposable, tateCombiDisposable, rubyConvertDisposable, rubyConvertReverseDisposable, fullwidthDisposable, acronymDisposable, fullwidthDigitsToKanjiDisposable, tatechuyokoDigitDisposable, ellipsisFixDisposable);
+	const dashNormalizationDisposable = vscode.commands.registerCommand('guns-tool.dashNormalization', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			vscode.window.showInformationMessage('アクティブなエディタがありません。');
+			return;
+		}
+
+		const document = editor.document;
+		const fullText = document.getText();
+
+		// 各種ダッシュパターンをU+2500「──」に統一する
+		// ーー（全角音長音符）、--（半角ハイフン）、U+2014（——）、U+2015（――）などを置換
+		let replacedText = fullText
+			.replace(/ーー/g, '──')           // 全角音長音符
+			.replace(/--/g, '──')            // 半角ハイフン
+			.replace(/\u2014\u2014/g, '──')  // U+2014 EM DASH
+			.replace(/\u2015\u2015/g, '──')  // U+2015 HORIZONTAL BAR
+			.replace(/――/g, '──')           // 水平線
+			.replace(/−−/g, '──')           // マイナス記号
+			.replace(/＿＿/g, '──');         // 全角アンダースコア
+
+		if (fullText !== replacedText) {
+			const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(fullText.length));
+			await editor.edit(editBuilder => {
+				editBuilder.replace(fullRange, replacedText);
+			});
+			vscode.window.showInformationMessage('ダッシュを統一しました。');
+		} else {
+			vscode.window.showInformationMessage('ダッシュ変換対象が見つかりませんでした。');
+		}
+	});
+
+	context.subscriptions.push( insertDisposable, removeDisposable, tateCombiDisposable, rubyConvertDisposable, rubyConvertReverseDisposable, fullwidthDisposable, acronymDisposable, fullwidthDigitsToKanjiDisposable, tatechuyokoDigitDisposable, ellipsisFixDisposable, dashNormalizationDisposable);
 
 	const spaceAfterPunctDisposable = vscode.commands.registerCommand('guns-tool.spaceAfterPunct', async () => {
 		const editor = vscode.window.activeTextEditor;

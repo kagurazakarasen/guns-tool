@@ -16,6 +16,7 @@
 - v0.1.1 マーケットプレイスで公開
 - v0.1.2 実行時のインフォメーション表記を修正
 - v0.1.3 「全角数字を漢数字に」コマンド作成
+- v0.1.32 「ダッシュ整形」コマンド追加
 
 ---
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
