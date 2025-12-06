@@ -326,7 +326,7 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 - applyAllFixesコマンドから呼び出される各コマンドのON/OFFと順序の設定ができるように修正
 
 ---
-
+　
 ## License
 
 This extension is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
