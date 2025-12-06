@@ -67,6 +67,35 @@ https://www.aiajp.org/2014/01/gunsu_21.html
 
 BCCKSにアップする前のテキスト原稿ファイルに対してこのコマンドを一度実行するだけで一気に基本的整形が行われ（るといいな）たりします。
 
+### 設定で実行するコマンドの順序・ON/OFFを切り替える
+
+`GTool:全修正を一括で行う` は、設定で実行するコマンドの順序変更や個別コマンドの無効化ができます。VS Code の `settings.json` に以下のように記述します（例）：
+
+```json
+{
+	"gunsTool.applyAllFixes.commandOrder": [
+		"guns-tool.insertSpace",
+		"guns-tool.removePunctuation",
+		"guns-tool.fullwidthSingleAlphabet",
+		"guns-tool.fixEllipsis",
+		"guns-tool.spaceAfterPunct"
+	],
+	"gunsTool.applyAllFixes.disabledCommands": [
+		"guns-tool.spaceAfterPunct"
+	]
+}
+```
+
+上記の例では、実行順序を変更しつつ `guns-tool.spaceAfterPunct` を無効化しています。`commandOrder` に記載した順序でコマンドが実行され、`disabledCommands` に含まれるコマンドはスキップされます。
+
+
+## デフォルトの「GTool:全修正を一括で行う」コマンドから呼ばれていない除外機能は以下の通り
+
+* 「GTool:ルビ変換2：BCCKS→青空」: guns-tool.rubyConvertBccksToAozora
+* 「GTool:全角数字を漢数字に」:  guns-tool.fullwidthDigitsToKanji
+
+それぞれ、コマンド名を
+`settings.json` 内 "gunsTool.applyAllFixes.commandOrder" に追記することで有効化できます。
 
 ---
 # 以下、個別のコマンド（一括コマンドから呼び出されています）
@@ -244,11 +273,7 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 入力: 前――後ろ → 出力: 前──後ろ
 
 ---
-## 「GTool:全修正を一括で行う」コマンドから呼ばれていない除外機能
 
-* 「GTool:ルビ変換2：BCCKS→青空」: guns-tool.rubyConvertBccksToAozora
-* 「GTool:全角数字を漢数字に」:  guns-tool.fullwidthDigitsToKanji
-* 「GTool:ダッシュ整形」:  guns-tool.dashNormalization
 ---
 ## 既出の問題
 
@@ -297,6 +322,8 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 - 「全角数字を漢数字に」コマンド追加
 ### v0.1.32
 - 「ダッシュ整形」コマンド追加
+### v0.1.4
+- applyAllFixesコマンドから呼び出される各コマンドのON/OFFと順序の設定ができるように修正
 
 ---
 

@@ -17,6 +17,7 @@
 - v0.1.2 実行時のインフォメーション表記を修正
 - v0.1.3 「全角数字を漢数字に」コマンドを追加
 - v0.1.32 「ダッシュ整形」コマンドを追加
+- v0.1.4 applyAllFixesコマンドから呼び出される各コマンドのON/OFFと順序の設定ができるように修正
 
 ---
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
