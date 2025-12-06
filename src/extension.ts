@@ -385,9 +385,9 @@ export function activate(context: vscode.ExtensionContext) {
 			return;
 		}
 
-		// 実行順序：insertSpace → removePunctuation → tateCombiCharacters → rubyConvertAozoraToBccks → 
-		// fullwidthSingleAlphabet → fullwidthAcronym → tateChuyokoTwoDigit → fixEllipsis → spaceAfterPunct
-		const commands = [
+		// 設定から実行順序と無効化リストを取得する
+		const config = vscode.workspace.getConfiguration('gunsTool');
+		const defaultCommands = [
 			'guns-tool.insertSpace',
 			'guns-tool.removePunctuation',
 			'guns-tool.tateCombiCharacters',
@@ -398,6 +398,46 @@ export function activate(context: vscode.ExtensionContext) {
 			'guns-tool.fixEllipsis',
 			'guns-tool.spaceAfterPunct'
 		];
+		const configuredOrder = config.get<string[]>('applyAllFixes.commandOrder') || defaultCommands;
+		const disabledCommands = config.get<string[]>('applyAllFixes.disabledCommands') || [];
+
+		// 最終実行リストを決定（設定順序に従い、disabled に含まれるものは除外）
+		const commands = configuredOrder.filter(cmd => !disabledCommands.includes(cmd));
+
+		if (commands.length === 0) {
+			vscode.window.showInformationMessage('実行対象のコマンドがありません。設定を確認してください。');
+			return;
+		}
+
+		// 実行前にユーザに確認ダイアログを表示する（日本語のコマンド名で順序付きリスト）
+		const commandTitleMap: { [id: string]: string } = {
+			'guns-tool.insertSpace': '行頭にスペース挿入',
+			'guns-tool.removePunctuation': 'カッコ内末尾の句点削除',
+			'guns-tool.tateCombiCharacters': '全角！！、！？を縦中横に',
+			'guns-tool.rubyConvertAozoraToBccks': 'ルビ変換：青空→BCCKS',
+			'guns-tool.rubyConvertBccksToAozora': 'ルビ変換：BCCKS→青空',
+			'guns-tool.fullwidthSingleAlphabet': 'アルファベット単独文字を全角に',
+			'guns-tool.fullwidthAcronym': 'アルファベット略称（3文字以下）を全角に',
+			'guns-tool.tateChuyokoTwoDigit': '半角数値（2ケタ）を縦中横に',
+			'guns-tool.fixEllipsis': '三点リーダ修正',
+			'guns-tool.spaceAfterPunct': '感嘆符/疑問符の後にスペース',
+			'guns-tool.fullwidthDigitsToKanji': '全角数字を漢数字に',
+			'guns-tool.dashNormalization': 'ダッシュ整形'
+		};
+
+		const lines = commands.map((cmd, idx) => `${idx + 1}. ${commandTitleMap[cmd] || cmd}`);
+		const message = `以下の ${commands.length} 件のコマンドを実行します。\n${lines.join('\n')}\nよろしいですか？`;
+
+		const confirm = await vscode.window.showInformationMessage(
+			message,
+			{ modal: true },
+			'実行する',
+			'キャンセル'
+		);
+		if (confirm !== '実行する') {
+			vscode.window.showInformationMessage('全修正はキャンセルされました。');
+			return;
+		}
 
 		let successCount = 0;
 		for (const command of commands) {

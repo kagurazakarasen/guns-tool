@@ -2,7 +2,7 @@
   "name": "guns-tool",
   "displayName": "GUNS TOOL",
   "description": "Guns tool ／ 小説用テキスト原稿整形ツール",
-  "version": "0.1.32",
+  "version": "0.1.4",
   "publisher": "RASEN-WORKS",
   "icon": "icon.png",
   "repository": {
@@ -72,6 +72,39 @@
         "title": "GTool:全修正を一括で行う"
       }
     ]
+    ,
+    "configuration": {
+      "title": "GUNS TOOL Configuration",
+      "properties": {
+        "gunsTool.applyAllFixes.commandOrder": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "guns-tool.insertSpace",
+            "guns-tool.removePunctuation",
+            "guns-tool.tateCombiCharacters",
+            "guns-tool.rubyConvertAozoraToBccks",
+            "guns-tool.fullwidthSingleAlphabet",
+            "guns-tool.fullwidthAcronym",
+            "guns-tool.tateChuyokoTwoDigit",
+            "guns-tool.fixEllipsis",
+            "guns-tool.spaceAfterPunct",
+            "guns-tool.dashNormalization"
+          ],
+          "description": "`GTool:全修正を一括で行う` 実行時のコマンド順序（コマンドIDの配列）です。順序を入れ替えることで実行順を変更できます。"
+        },
+        "gunsTool.applyAllFixes.disabledCommands": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "`GTool:全修正を一括で行う` 実行時にスキップするコマンドのIDの配列です。例えば [\"guns-tool.spaceAfterPunct\"] のように指定します。"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
