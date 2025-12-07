@@ -39,24 +39,27 @@ https://gunsu.jp/2014/12/20/conventions/
 
  * コマンドパレット（Ctrl+Shift+P）から、コマンドを入力し実行
 
+※ [GTool:全修正を一括で行う](#guns-tool.applyAllFixes) を入力すると設定された機能が一括で実行されます。
+
 ---
 ---
 
-# コマンドと各機能
+# コマンド・機能詳細
 ---
 
 ## コマンド一覧（目次）
 
 以下は本拡張が提供するコマンドの目次です。クリックすると該当の説明にジャンプします。
 
+### 一括実行コマンド
 - [GTool:全修正を一括で行う](#guns-tool.applyAllFixes)
+
+### ファイル内全体修正コマンド
 - [GTool:行頭にスペース挿入](#guns-tool.insertSpace)
 - [GTool:全角！！、！？等を半角横指定に変換](#guns-tool.tateCombiCharacters)
 - [GTool:全角数字を漢数字に](#guns-tool.fullwidthDigitsToKanji)
 - [GTool:ルビ変換：青空→BCCKS](#guns-tool.rubyConvertAozoraToBccks)
 - [GTool:ルビ変換2：BCCKS→青空](#guns-tool.rubyConvertBccksToAozora)
-- [GTool:選択範囲にBCCKSルビを設定](#guns-tool.setRubyForSelection)
-- [GTool:選択範囲に圏点ルビ（1文字毎）を設定](#guns-tool.setCirclePointRuby)
 - [GTool:アルファベット単独文字を全角に](#guns-tool.fullwidthSingleAlphabet)
 - [GTool:アルファベット略称（3文字以下）を全角に](#guns-tool.fullwidthAcronym)
 - [GTool:半角数値（２ケタ）を縦中横に](#guns-tool.tateChuyokoTwoDigit)
@@ -64,6 +67,13 @@ https://gunsu.jp/2014/12/20/conventions/
 - [GTool:感嘆符/疑問符の後にスペース](#guns-tool.spaceAfterPunct)
 - [GTool:ダッシュ整形](#guns-tool.dashNormalization)
 
+### 選択範囲修正コマンド
+- [GTool:選択範囲にBCCKSルビを設定](#guns-tool.setRubyForSelection)
+- [GTool:選択範囲に圏点ルビ（1文字毎）を設定](#guns-tool.setCirclePointRuby)
+
+
+---
+---
 
 <a id="guns-tool.applyAllFixes"></a>
 ## コマンド：「GTool:全修正を一括で行う」
@@ -71,7 +81,7 @@ https://gunsu.jp/2014/12/20/conventions/
 
 ### 機能：
 
- * 以下の全てのコマンドを順序立てて一括で実行します（BCCKSルビを青空文庫形式に変換する rubyConvertBccksToAozora は除外）。
+ * 以下の全てのコマンドを順序立てて一括で実行します（BCCKSルビを青空文庫形式に変換する rubyConvertBccksToAozora は除外しています）。
 
 ### 実行順序：
 
@@ -118,7 +128,10 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 ---
 
 ---
-# 以下、個別のコマンド（一括コマンドから呼び出されています）
+# 個別コマンド詳細
+
+※一括コマンドから呼び出されています
+
 ---
 
 <a id="guns-tool.insertSpace"></a>
