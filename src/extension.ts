@@ -349,6 +349,74 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push( insertDisposable, removeDisposable, tateCombiDisposable, rubyConvertDisposable, rubyConvertReverseDisposable, fullwidthDisposable, acronymDisposable, fullwidthDigitsToKanjiDisposable, tatechuyokoDigitDisposable, ellipsisFixDisposable, dashNormalizationDisposable);
 
+	// 選択範囲にBCCKS形式のルビを設定するコマンド
+	const setRubyDisposable = vscode.commands.registerCommand('guns-tool.setRubyForSelection', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			vscode.window.showInformationMessage('アクティブなエディタがありません。');
+			return;
+		}
+
+		const selections = editor.selections;
+		if (selections.every(sel => sel.isEmpty)) {
+			vscode.window.showInformationMessage('ルビを設定するには、テキストを選択状態にしてください。');
+			return;
+		}
+
+		const ruby = await vscode.window.showInputBox({
+			prompt: '選択範囲に設定するルビ（ふりがな）を入力してください。',
+			placeHolder: 'ルビ',
+			ignoreFocusOut: true
+		});
+		if (ruby === undefined) {
+			// キャンセル
+			return;
+		}
+
+		await editor.edit(editBuilder => {
+			for (const sel of selections) {
+				if (sel.isEmpty) { continue; }
+				const text = editor.document.getText(sel);
+				editBuilder.replace(sel, `{${text}}(${ruby})`);
+			}
+		});
+		vscode.window.showInformationMessage('選択範囲にルビを設定しました。');
+	});
+
+	context.subscriptions.push(setRubyDisposable);
+
+	// 選択範囲に圏点ルビ（1文字毎）を設定するコマンド
+	const setCirclePointRubyDisposable = vscode.commands.registerCommand('guns-tool.setCirclePointRuby', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			vscode.window.showInformationMessage('アクティブなエディタがありません。');
+			return;
+		}
+
+		const selections = editor.selections;
+		if (selections.every(sel => sel.isEmpty)) {
+			vscode.window.showInformationMessage('圏点ルビを設定するには、テキストを選択してください。');
+			return;
+		}
+
+		const circlePoint = '﹅'; // 圏点記号
+
+		await editor.edit(editBuilder => {
+			for (const sel of selections) {
+				if (sel.isEmpty) { continue; }
+				const text = editor.document.getText(sel);
+				// 1文字ずつ {文字}(﹅) に置換し、スペースで区切る
+				const rubyText = Array.from(text)
+					.map(ch => `{${ch}}(${circlePoint})`)
+					.join(' ');
+				editBuilder.replace(sel, rubyText);
+			}
+		});
+		vscode.window.showInformationMessage('選択範囲に圏点ルビを設定しました。');
+	});
+
+	context.subscriptions.push(setCirclePointRubyDisposable);
+
 	const spaceAfterPunctDisposable = vscode.commands.registerCommand('guns-tool.spaceAfterPunct', async () => {
 		const editor = vscode.window.activeTextEditor;
 		if (!editor) {
