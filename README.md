@@ -37,9 +37,10 @@ https://gunsu.jp/2014/12/20/conventions/
 ---
 # 使いかた
 
- * コマンドパレット（Ctrl+Shift+P）から、以下のコマンドを入力し実行
+ * コマンドパレット（Ctrl+Shift+P）から、コマンドを入力し実行
 
- ---
+---
+---
 
 # コマンドと各機能
 ---
@@ -67,7 +68,9 @@ https://gunsu.jp/2014/12/20/conventions/
 
 コマンドパレット（Ctrl+Shift+P）から「GTool:全修正を一括で行う」を実行すると、上記の9つのコマンドが順番に実行されます。
 
-BCCKSにアップする前のテキスト原稿ファイルに対してこのコマンドを一度実行するだけで一気に基本的整形が行われ（るといいな）たりします。
+BCCKSにアップする前のテキスト原稿ファイルに対してこのコマンドを一度実行するだけで一気に基本的整形が行われたりします。
+
+※ v0.1.4 以降は下記のように`settings.json`を修正することでコマンド順序と実行可否の設定が可能です。
 
 ### 設定で実行するコマンドの順序・ON/OFFを切り替える
 
@@ -91,14 +94,7 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 上記の例では、実行順序を変更しつつ `guns-tool.spaceAfterPunct` を無効化しています。`commandOrder` に記載した順序でコマンドが実行され、`disabledCommands` に含まれるコマンドはスキップされます。
 
 
-## デフォルトの「GTool:全修正を一括で行う」コマンドから呼ばれていない除外機能は以下の通り
-
-* 「GTool:ルビ変換2：BCCKS→青空」: guns-tool.rubyConvertBccksToAozora
-* 「GTool:全角数字を漢数字に」:  guns-tool.fullwidthDigitsToKanji
-
-それぞれ、コマンド名を
-`settings.json` 内 "gunsTool.applyAllFixes.commandOrder" に追記することで有効化できます。
-
+---
 ---
 # 以下、個別のコマンド（一括コマンドから呼び出されています）
 ---
