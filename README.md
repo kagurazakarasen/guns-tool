@@ -45,6 +45,27 @@ https://gunsu.jp/2014/12/20/conventions/
 # コマンドと各機能
 ---
 
+## コマンド一覧（目次）
+
+以下は本拡張が提供するコマンドの目次です。クリックすると該当の説明にジャンプします。
+
+- [GTool:全修正を一括で行う](#guns-tool.applyAllFixes)
+- [GTool:行頭にスペース挿入](#guns-tool.insertSpace)
+- [GTool:全角！！、！？等を半角横指定に変換](#guns-tool.tateCombiCharacters)
+- [GTool:全角数字を漢数字に](#guns-tool.fullwidthDigitsToKanji)
+- [GTool:ルビ変換：青空→BCCKS](#guns-tool.rubyConvertAozoraToBccks)
+- [GTool:ルビ変換2：BCCKS→青空](#guns-tool.rubyConvertBccksToAozora)
+- [GTool:選択範囲にBCCKSルビを設定](#guns-tool.setRubyForSelection)
+- [GTool:選択範囲に圏点ルビ（1文字毎）を設定](#guns-tool.setCirclePointRuby)
+- [GTool:アルファベット単独文字を全角に](#guns-tool.fullwidthSingleAlphabet)
+- [GTool:アルファベット略称（3文字以下）を全角に](#guns-tool.fullwidthAcronym)
+- [GTool:半角数値（２ケタ）を縦中横に](#guns-tool.tateChuyokoTwoDigit)
+- [GTool:三点リーダ修正](#guns-tool.fixEllipsis)
+- [GTool:感嘆符/疑問符の後にスペース](#guns-tool.spaceAfterPunct)
+- [GTool:ダッシュ整形](#guns-tool.dashNormalization)
+
+
+<a id="guns-tool.applyAllFixes"></a>
 ## コマンド：「GTool:全修正を一括で行う」
  * guns-tool.applyAllFixes
 
@@ -100,6 +121,7 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 # 以下、個別のコマンド（一括コマンドから呼び出されています）
 ---
 
+<a id="guns-tool.insertSpace"></a>
 ## コマンド：「GTool:行頭にスペース挿入」
  * guns-tool.insertSpace
 
@@ -107,6 +129,7 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
  * 各行（段落）の行頭にスペースを挿入する。最初からスペースがある場合や、セリフ括弧（「や『）などの記号の場合は何もせずにスキップする。
 
 ---
+<a id="guns-tool.tateCombiCharacters"></a>
 ## コマンド：「GTool:全角！！、！？等を半角横指定に変換」
  * guns-tool.tateCombiCharacters
 
@@ -122,6 +145,7 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 
 ---
 
+<a id="guns-tool.fullwidthDigitsToKanji"></a>
 ## コマンド：「GTool:全角数字を漢数字に」
  * guns-tool.fullwidthDigitsToKanji
 
@@ -137,6 +161,7 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 入力: コード番号００１ → 出力: コード番号〇〇一
 
 ---
+<a id="guns-tool.rubyConvertAozoraToBccks"></a>
 ## コマンド：「GTool:ルビ変換：青空→BCCKS」
  * guns-tool.rubyConvertAozoraToBccks
 
@@ -153,10 +178,12 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 ※v0.1.1現在、青空文庫形式のルビ開始文字列（｜）が省略されていると正常に判定できないので注意。
 
 ---
+<a id="guns-tool.rubyConvertBccksToAozora"></a>
 ## コマンド：「GTool:ルビ変換2：BCCKS→青空」
  * guns-tool.rubyConvertBccksToAozora
 
 ---
+<a id="guns-tool.setRubyForSelection"></a>
 ## コマンド：「GTool:選択範囲にBCCKSルビを設定」
  * guns-tool.setRubyForSelection
 
@@ -173,6 +200,7 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 複数選択に対しては同じルビが全ての選択範囲に適用されます。
 
 ---
+<a id="guns-tool.setCirclePointRuby"></a>
 ## コマンド：「GTool:選択範囲に圏点ルビ（1文字毎）を設定」
  * guns-tool.setCirclePointRuby
 
@@ -206,6 +234,7 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 
 ---
 
+<a id="guns-tool.fullwidthSingleAlphabet"></a>
 ## コマンド：「GTool:アルファベット単独文字を全角に」
  * guns-tool.fullwidthSingleAlphabet
 
@@ -225,6 +254,7 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 
 ---
 
+<a id="guns-tool.fullwidthAcronym"></a>
 ## コマンド：「GTool:アルファベット略称（3文字以下）を全角に」
  * guns-tool.fullwidthAcronym
 
@@ -242,6 +272,7 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 
 ---
 
+<a id="guns-tool.tateChuyokoTwoDigit"></a>
 ## コマンド：「GTool:半角数値（２ケタ）を縦中横に」
  * guns-tool.tateChuyokoTwoDigit
 
@@ -257,6 +288,7 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 
 ---
 
+<a id="guns-tool.fixEllipsis"></a>
 ## コマンド：「GTool:三点リーダ修正」
  * guns-tool.fixEllipsis
 
@@ -274,6 +306,7 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 
 ---
 
+<a id="guns-tool.spaceAfterPunct"></a>
 ## コマンド：「GTool:感嘆符/疑問符の後にスペース挿入」
  * guns-tool.spaceAfterPunct
 
@@ -294,6 +327,7 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 
 ---
 
+<a id="guns-tool.dashNormalization"></a>
 ## コマンド：「GTool:ダッシュ整形」
  * guns-tool.dashNormalization
 
@@ -375,10 +409,6 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 - 全コマンド一気の名称から「全」を抜く。（選択できるようにしたので）
 - カーソル位置の文字コード表示
 - コマンドリストのmdファイル目次化（別アプリつくるかな？）
-
-## コマンドリストテスト
-* [GTool:行頭にスペース挿入](コマンド：「GTool:行頭にスペース挿入」)
-* [GTool:全角！！、！？等を半角横指定に変換](コマンド：「GTool:全角！！、！？等を半角横指定に変換」)
 
 
 ---
