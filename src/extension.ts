@@ -476,6 +476,38 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(toUpperCaseDisposable);
 
+	// 選択範囲内の半角英数字を全角に変換するコマンド
+	const halfwidthToFullwidthDisposable = vscode.commands.registerCommand('guns-tool.halfwidthToFullwidth', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			vscode.window.showInformationMessage('アクティブなエディタがありません。');
+			return;
+		}
+
+		const selections = editor.selections;
+		if (selections.every(sel => sel.isEmpty)) {
+			vscode.window.showInformationMessage('半角英数字を全角化するには、テキストを選択してください。');
+			return;
+		}
+
+		await editor.edit(editBuilder => {
+			for (const sel of selections) {
+				if (sel.isEmpty) { continue; }
+				const text = editor.document.getText(sel);
+				// 半角英数字・記号・スペース (0x20-0x7E) を全角に変換
+				const fullwidthText = text.replace(/[\x20-\x7E]/g, (ch) => {
+					const code = ch.charCodeAt(0);
+					// ASCII範囲(0x20-0x7E)を全角(0xFF00-0xFF5E)にマッピング
+					return String.fromCharCode(code + 0xFEE0);
+				});
+				editBuilder.replace(sel, fullwidthText);
+			}
+		});
+		vscode.window.showInformationMessage('選択範囲内の半角文字を全角に変換しました。');
+	});
+
+	context.subscriptions.push(halfwidthToFullwidthDisposable);
+
 	const spaceAfterPunctDisposable = vscode.commands.registerCommand('guns-tool.spaceAfterPunct', async () => {
 		const editor = vscode.window.activeTextEditor;
 		if (!editor) {
