@@ -2,6 +2,12 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
+// 行背景色デコレーション用のグローバル変数
+let alternatingLineDecorations: {
+	evenDecoration: vscode.TextEditorDecorationType;
+	oddDecoration: vscode.TextEditorDecorationType;
+} | null = null;
+
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -646,6 +652,72 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	context.subscriptions.push(applyAllFixesDisposable);
+
+	const toggleAlternatingLineBackgroundDisposable = vscode.commands.registerCommand('guns-tool.toggleAlternatingLineBackground', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			vscode.window.showInformationMessage('アクティブなエディタがありません。');
+			return;
+		}
+
+		// トグル: 既に適用されていればリセット、されていなければセット
+		if (alternatingLineDecorations) {
+			// リセット処理
+			editor.setDecorations(alternatingLineDecorations.evenDecoration, []);
+			editor.setDecorations(alternatingLineDecorations.oddDecoration, []);
+			alternatingLineDecorations.evenDecoration.dispose();
+			alternatingLineDecorations.oddDecoration.dispose();
+			alternatingLineDecorations = null;
+			vscode.window.showInformationMessage('行背景色をリセットしました。');
+		} else {
+			// セット処理
+			const config = vscode.workspace.getConfiguration('gunsTool.alternatingLineBackground');
+			const evenBgColor = config.get<string>('evenLineColor', 'rgba(255, 255, 200, 0.1)');
+			const oddBgColor = config.get<string>('oddLineColor', 'rgba(200, 255, 255, 0.1)');
+
+			const evenDecoration = vscode.window.createTextEditorDecorationType({
+				backgroundColor: evenBgColor,
+				isWholeLine: true
+			});
+
+			const oddDecoration = vscode.window.createTextEditorDecorationType({
+				backgroundColor: oddBgColor,
+				isWholeLine: true
+			});
+
+			alternatingLineDecorations = { evenDecoration, oddDecoration };
+
+			const document = editor.document;
+			const evenRanges: vscode.Range[] = [];
+			const oddRanges: vscode.Range[] = [];
+			let lineIndex = 0; // 実際の行カウント（空行・空白のみ行を除外）
+
+			for (let i = 0; i < document.lineCount; i++) {
+				const line = document.lineAt(i);
+				const trimmed = line.text.trim();
+				
+				// 空行または空白のみの行はスキップ
+				if (trimmed === '') {
+					continue;
+				}
+
+				const range = line.range;
+				if (lineIndex % 2 === 0) {
+					evenRanges.push(range);
+				} else {
+					oddRanges.push(range);
+				}
+				lineIndex++;
+			}
+
+			editor.setDecorations(evenDecoration, evenRanges);
+			editor.setDecorations(oddDecoration, oddRanges);
+
+			vscode.window.showInformationMessage('行背景色を適用しました。');
+		}
+	});
+
+	context.subscriptions.push(toggleAlternatingLineBackgroundDisposable);
 }
 
 // This method is called when your extension is deactivated

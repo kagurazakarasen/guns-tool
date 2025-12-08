@@ -2,7 +2,7 @@
   "name": "guns-tool",
   "displayName": "GUNS TOOL",
   "description": "Guns tool ／ 小説用テキスト原稿整形ツール",
-  "version": "0.1.61",
+  "version": "0.1.70",
   "publisher": "RASEN-WORKS",
   "icon": "icon.png",
   "repository": {
@@ -91,6 +91,10 @@
       {
         "command": "guns-tool.showDocumentStatus",
         "title": "GTool:文書ステイタス表示"
+      },
+      {
+        "command": "guns-tool.toggleAlternatingLineBackground",
+        "title": "GTool:行毎交互背景色セット／リセット"
       }
     ]
     ,
@@ -123,6 +127,16 @@
           },
           "default": [],
           "description": "`GTool:全修正を一括で行う` 実行時にスキップするコマンドのIDの配列です。例えば [\"guns-tool.spaceAfterPunct\"] のように指定します。"
+        },
+        "gunsTool.alternatingLineBackground.evenLineColor": {
+          "type": "string",
+          "default": "rgba(255, 255, 200, 0.3)",
+          "description": "行毎交互背景色の偶数行（0始まり）の背景色を指定します。CSS形式（rgba, hex等）で指定可能です。"
+        },
+        "gunsTool.alternatingLineBackground.oddLineColor": {
+          "type": "string",
+          "default": "rgba(200, 255, 255, 0.3)",
+          "description": "行毎交互背景色の奇数行の背景色を指定します。CSS形式（rgba, hex等）で指定可能です。"
         }
       }
     }
