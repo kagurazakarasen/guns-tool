@@ -67,7 +67,7 @@ https://gunsu.jp/2014/12/20/conventions/
 - [GTool:感嘆符/疑問符の後にスペース](#guns-tool.spaceAfterPunct)
 - [GTool:ダッシュ整形](#guns-tool.dashNormalization)
 
-### 選択範囲修正コマンド
+### 選択範囲内修正コマンド
 - [GTool:選択範囲にBCCKSルビを設定](#guns-tool.setRubyForSelection)
 - [GTool:選択範囲に圏点ルビ（1文字毎）を設定](#guns-tool.setCirclePointRuby)
 - [GTool:選択範囲内アルファベット小文字を大文字化](#guns-tool.toUpperCase)
@@ -469,18 +469,14 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 カーソル位置に文字がない場合は「なし」と表示されます。
 
 ---
+---
 
 ## 既出の問題
 
 - rubyConvertAozoraToBccks で、青空文庫形式の本文文字列の開始文字（｜）が省略されると判定されない。
 
 ---
-
-
-
 ---
-
-
 
 ## Release Notes
 
@@ -540,6 +536,7 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 - 全コマンド一気の名称から「全」を抜く。（選択できるようにしたので）
 - 選択範囲指定のないファイル全体対象コマンドも選択範囲指定を可能に
 
+---
 ---
 
 ## License
