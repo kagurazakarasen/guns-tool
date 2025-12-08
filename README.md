@@ -76,6 +76,9 @@ https://gunsu.jp/2014/12/20/conventions/
 ### 情報表示コマンド
 - [GTool:文書ステイタス表示](#guns-tool.showDocumentStatus)
 
+### 表示支援コマンド
+- [GTool:行毎交互背景色セット／リセット](#guns-tool.toggleAlternatingLineBackground)
+
 ---
 ---
 
@@ -467,6 +470,60 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 ```
 
 カーソル位置に文字がない場合は「なし」と表示されます。
+
+---
+
+<a id="guns-tool.toggleAlternatingLineBackground"></a>
+
+## コマンド：「GTool:行毎交互背景色セット／リセット」
+ * guns-tool.toggleAlternatingLineBackground
+
+### 機能：
+
+ * ドキュメント内の行ごとに交互に背景色を適用し、行の切り替わりを見やすくします。
+ * トグル操作：1回目の実行で背景色をセット、2回目の実行でリセットされます。
+ * 空行または空白のみの行はカウントから除外されます。
+ * 背景色はsettings.jsonでカスタマイズできます。
+
+#### 設定例
+
+`settings.json` に以下のように追加して、背景色をカスタマイズできます：
+
+```json
+{
+  "gunsTool.alternatingLineBackground.evenLineColor": "rgba(255, 255, 200, 0.1)",
+  "gunsTool.alternatingLineBackground.oddLineColor": "rgba(200, 255, 255, 0.1)"
+}
+```
+
+- `evenLineColor`: 偶数行（最初の非空行を0行目としてカウント）の背景色
+- `oddLineColor`: 奇数行の背景色
+
+色は CSS 形式（`rgba()`, `#RRGGBB`, `#RRGGBBAA` 等）で指定できます。
+
+#### 動作例
+
+**初回実行（セット）**:
+
+ドキュメント内の非空行に対して、1行おきに異なる背景色が適用されます。
+
+```
+これは1行目。  ← 背景色A
+これは2行目。  ← 背景色B
+これは3行目。  ← 背景色A
+                   ← 空行はスキップ
+これは4行目。  ← 背景色B
+```
+
+**2回目実行（リセット）**:
+
+すべての背景色が解除され、通常の表示に戻ります。
+
+#### 注意事項
+
+- この背景色はエディタ上でのみの一時的な表示で、ファイルには保存されません。
+- ファイルを閉じると背景色はリセットされます。
+- テキスト編集中の自動更新は行われません。再適用するには、リセット後に再度コマンドを実行してください。
 
 ---
 ---
