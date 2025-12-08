@@ -508,6 +508,39 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(halfwidthToFullwidthDisposable);
 
+	const showDocumentStatusDisposable = vscode.commands.registerCommand('guns-tool.showDocumentStatus', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			vscode.window.showInformationMessage('アクティブなエディタがありません。');
+			return;
+		}
+
+		const document = editor.document;
+		const filePath = document.uri.fsPath;
+		const fileName = document.fileName.split(/[\\/]/).pop() || 'Untitled';
+		const text = document.getText();
+		const charCount = text.length;
+		const lineCount = document.lineCount;
+		
+		// カーソル位置の文字コードを取得
+		const position = editor.selection.active;
+		const offset = document.offsetAt(position);
+		const charAtCursor = text[offset] || '';
+		const charCode = charAtCursor ? `U+${charAtCursor.charCodeAt(0).toString(16).toUpperCase().padStart(4, '0')} (${charAtCursor})` : 'なし';
+
+		const statusMessage = [
+			`ファイルパス: ${filePath}`,
+			`ファイル名: ${fileName}`,'',
+			`総文字数: ${charCount}`,
+			`行数（改行数）: ${lineCount}`,'',
+			`カーソル位置の文字コード: ${charCode}`
+		].join('\n');
+
+		vscode.window.showInformationMessage(statusMessage, { modal: true });
+	});
+
+	context.subscriptions.push(showDocumentStatusDisposable);
+
 	const spaceAfterPunctDisposable = vscode.commands.registerCommand('guns-tool.spaceAfterPunct', async () => {
 		const editor = vscode.window.activeTextEditor;
 		if (!editor) {

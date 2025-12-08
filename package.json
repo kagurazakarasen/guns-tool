@@ -2,7 +2,7 @@
   "name": "guns-tool",
   "displayName": "GUNS TOOL",
   "description": "Guns tool ／ 小説用テキスト原稿整形ツール",
-  "version": "0.1.58",
+  "version": "0.1.6",
   "publisher": "RASEN-WORKS",
   "icon": "icon.png",
   "repository": {
@@ -87,6 +87,10 @@
       {
         "command": "guns-tool.halfwidthToFullwidth",
         "title": "GTool:選択範囲内の半角英数字を全角に"
+      },
+      {
+        "command": "guns-tool.showDocumentStatus",
+        "title": "GTool:文書ステイタス表示"
       }
     ]
     ,
