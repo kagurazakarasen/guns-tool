@@ -2,7 +2,7 @@
   "name": "guns-tool",
   "displayName": "GUNS TOOL",
   "description": "Guns tool ／ 小説用テキスト原稿整形ツール",
-  "version": "0.1.56",
+  "version": "0.1.57",
   "publisher": "RASEN-WORKS",
   "icon": "icon.png",
   "repository": {
@@ -79,6 +79,10 @@
       {
         "command": "guns-tool.setCirclePointRuby",
         "title": "GTool:選択範囲に圏点ルビ（1文字毎）を設定"
+      },
+      {
+        "command": "guns-tool.toUpperCase",
+        "title": "GTool:選択範囲内アルファベット小文字を大文字化"
       }
     ]
     ,

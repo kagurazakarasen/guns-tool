@@ -439,6 +439,43 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(setCirclePointRubyDisposable);
 
+	// 選択範囲の小文字を大文字に変換するコマンド
+	const toUpperCaseDisposable = vscode.commands.registerCommand('guns-tool.toUpperCase', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			vscode.window.showInformationMessage('アクティブなエディタがありません。');
+			return;
+		}
+
+		const selections = editor.selections;
+		if (selections.every(sel => sel.isEmpty)) {
+			vscode.window.showInformationMessage('大文字化するには、テキストを選択してください。');
+			return;
+		}
+
+		await editor.edit(editBuilder => {
+			for (const sel of selections) {
+				if (sel.isEmpty) { continue; }
+				const text = editor.document.getText(sel);
+				// 半角小文字 (a-z) と全角小文字 (ａ-ｚ) を大文字に変換
+				const upperText = text.replace(/[a-zａ-ｚ]/g, (ch) => {
+					if (ch >= 'a' && ch <= 'z') {
+						// 半角小文字を大文字に
+						return ch.toUpperCase();
+					} else {
+						// 全角小文字 (U+FF41-FF5A) を全角大文字 (U+FF21-FF3A) に
+						const code = ch.charCodeAt(0);
+						return String.fromCharCode(code - 0x20);
+					}
+				});
+				editBuilder.replace(sel, upperText);
+			}
+		});
+		vscode.window.showInformationMessage('選択範囲の小文字を大文字に変換しました。');
+	});
+
+	context.subscriptions.push(toUpperCaseDisposable);
+
 	const spaceAfterPunctDisposable = vscode.commands.registerCommand('guns-tool.spaceAfterPunct', async () => {
 		const editor = vscode.window.activeTextEditor;
 		if (!editor) {
