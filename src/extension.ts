@@ -122,8 +122,17 @@ export function activate(context: vscode.ExtensionContext) {
 		const document = editor.document;
 		const fullText = document.getText();
 
-		// 青空文庫形式 |本文《ルビ》 → BCCKS形式 {本文}(ルビ) に変換
-		const replacedText = fullText.replace(/\|([^《]*?)《([^》]*?)》/g, '{$1}($2)');
+		// 青空文庫形式 → BCCKS形式に変換
+		// 1. ｜記号あり: ｜本文《ルビ》 → {本文}(ルビ)
+		// 2. ｜記号なし: 《ルビ》の前の連続した文字種（漢字、ひらがな、カタカナ等）を本文とみなす
+		let replacedText = fullText;
+		
+		// まず｜記号ありのパターンを変換
+		replacedText = replacedText.replace(/｜([^《]*?)《([^》]*?)》/g, '{$1}($2)');
+		
+		// 次に｜記号なしのパターンを変換
+		// 《の直前の文字種が連続する部分を本文として抽出
+		replacedText = replacedText.replace(/([一-龯々〆ヵヶ]+|[ぁ-ん]+|[ァ-ヴー]+|[ａ-ｚＡ-Ｚa-zA-Z]+|[０-９0-9]+)《([^》]*?)》/g, '{$1}($2)');
 
 		// 変更がある場合のみ置換を実行
 		if (fullText !== replacedText) {
@@ -151,7 +160,7 @@ export function activate(context: vscode.ExtensionContext) {
 		const fullText = document.getText();
 
 		// BCCKS形式 {本文}(ルビ) → 青空文庫形式 |本文《ルビ》 に変換
-		const replacedText = fullText.replace(/\{([^}]*?)\}\(([^)]*?)\)/g, '|$1《$2》');
+		const replacedText = fullText.replace(/\{([^}]*?)\}\(([^)]*?)\)/g, '｜$1《$2》');
 
 		// 変更がある場合のみ置換を実行
 		if (fullText !== replacedText) {
