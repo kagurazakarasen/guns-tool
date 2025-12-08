@@ -170,11 +170,22 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 		const document = editor.document;
-		const fullText = document.getText();
+		let targetText: string;
+		let targetRange: vscode.Range | undefined;
+		let processScope = 'ドキュメント全体';
+
+		// 選択範囲がある場合はそれを対象に、ない場合は全体を対象にする
+		if (editor.selection && !editor.selection.isEmpty) {
+			targetText = document.getText(editor.selection);
+			targetRange = editor.selection;
+			processScope = '選択範囲内';
+		} else {
+			targetText = document.getText();
+		}
 
 		// 日本語文字の間に単独で現れる英数字（半角アルファベット・半角数字）を全角化する
 		// 前後に任意の空白が挟まれていてもマッチする。例: '漢字 A 漢字' -> '漢字 Ａ 漢字', '漢字 1 漢字' -> '漢字 １ 漢字'
-		const replacedText = fullText.replace(/([\u3000-\u30FF\u4E00-\u9FFF])(\s*)([A-Za-z0-9])(\s*)([\u3000-\u30FF\u4E00-\u9FFF])/gu,
+		const replacedText = targetText.replace(/([\u3000-\u30FF\u4E00-\u9FFF])(\s*)([A-Za-z0-9])(\s*)([\u3000-\u30FF\u4E00-\u9FFF])/gu,
 			(m, g1, s1, ch, s2, g5) => {
 				// ASCIIの英数字を全角にマッピング（A -> Ａ, 0 -> ０）
 				const code = (ch as string).charCodeAt(0);
@@ -182,14 +193,14 @@ export function activate(context: vscode.ExtensionContext) {
 				return `${g1}${s1}${full}${s2}${g5}`;
 			});
 
-		if (fullText !== replacedText) {
-			const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(fullText.length));
+		if (targetText !== replacedText) {
+			const range = targetRange || new vscode.Range(document.positionAt(0), document.positionAt(targetText.length));
 			await editor.edit(editBuilder => {
-				editBuilder.replace(fullRange, replacedText);
+				editBuilder.replace(range, replacedText);
 			});
-			vscode.window.showInformationMessage('単独のアルファベットを全角化しました。');
+			vscode.window.showInformationMessage(`${processScope}の単独アルファベットを全角化しました。`);
 		} else {
-			vscode.window.showInformationMessage('単独アルファベットの変換対象が見つかりませんでした。');
+			vscode.window.showInformationMessage(`${processScope}に単独アルファベットの変換対象が見つかりませんでした。`);
 		}
 	});
 
@@ -201,24 +212,35 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 		const document = editor.document;
-		const fullText = document.getText();
+		let targetText: string;
+		let targetRange: vscode.Range | undefined;
+		let processScope = 'ドキュメント全体';
+
+		// 選択範囲がある場合はそれを対象に、ない場合は全体を対象にする
+		if (editor.selection && !editor.selection.isEmpty) {
+			targetText = document.getText(editor.selection);
+			targetRange = editor.selection;
+			processScope = '選択範囲内';
+		} else {
+			targetText = document.getText();
+		}
 
 		// 日本語文字の間に単独で現れる大文字アルファベット1～3文字の略称を全角化する
 		// 例：'漢字 ABC 漢字' -> '漢字 ＡＢＣ 漢字'、'漢字 AI 漢字' -> '漢字 ＡＩ 漢字'
-		const replacedText = fullText.replace(/([\u3000-\u30FF\u4E00-\u9FFF])(\s*)([A-Z]{1,3})(\s*)([\u3000-\u30FF\u4E00-\u9FFF])/gu,
+		const replacedText = targetText.replace(/([\u3000-\u30FF\u4E00-\u9FFF])(\s*)([A-Z]{1,3})(\s*)([\u3000-\u30FF\u4E00-\u9FFF])/gu,
 			(m, g1, s1, acronym, s2, g5) => {
 				const fullAcronym = (acronym as string).split('').map(ch => String.fromCharCode(ch.charCodeAt(0) + 0xFEE0)).join('');
 				return `${g1}${s1}${fullAcronym}${s2}${g5}`;
 			});
 
-		if (fullText !== replacedText) {
-			const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(fullText.length));
+		if (targetText !== replacedText) {
+			const range = targetRange || new vscode.Range(document.positionAt(0), document.positionAt(targetText.length));
 			await editor.edit(editBuilder => {
-				editBuilder.replace(fullRange, replacedText);
+				editBuilder.replace(range, replacedText);
 			});
-			vscode.window.showInformationMessage('大文字アルファベット略称を全角化しました。');
+			vscode.window.showInformationMessage(`${processScope}の大文字アルファベット略称を全角化しました。`);
 		} else {
-			vscode.window.showInformationMessage('大文字アルファベット略称変換対象が見つかりませんでした。');
+			vscode.window.showInformationMessage(`${processScope}に大文字アルファベット略称変換対象が見つかりませんでした。`);
 		}
 	});
 
