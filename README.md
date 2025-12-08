@@ -2,9 +2,11 @@
 
 ![GUNS TOOL](icon.png)
 
-VSCode拡張機能を利用したガンズ＆ユニバース（旧群雛）向けの原稿作成のアシストツールです。
+VSCode拡張機能を利用した縦書き用テキスト原稿（ガンズ＆ユニバース（旧群雛）向け）の原稿作成のアシストツールです。
 
-生原稿テキストファイルをBCCKSフォーマットで提出用に成形します。
+生原稿テキストファイルをBCCKSフォーマットで提出用に整形します。
+
+原稿執筆最終段階の整形用に便利です。
 
 https://BCCKS.com での利用を中心に考えていますが、単にテキストを変換・整形しているだけですので、BCCKS以外でも利用可能です。
 
@@ -16,12 +18,12 @@ https://gunsu.jp/2014/12/20/conventions/
 に準拠します。
 
 
-※個人使用のために作成したものです（ただいまテスト中）。過度に信用なさいませんように＞＜
+※個人使用のために作成したものです（永遠にテスト中）。過度に信用なさいませんように＞＜
 
 
-動作中のエディタの内容を修正しますが、保存はしていないので、原稿修正後はご自身の目でよく確認してから保存するようにしてください。
+動作中のエディタの内容を修正しますが、保存はしませんので、原稿修正後はご自身の目でよく確認してから保存するようにしてください。
 
-試しにマーケットプレイスで公開してみました：https://marketplace.visualstudio.com/items?itemName=RASEN-WORKS.guns-tool
+マーケットプレイスで公開してみました：https://marketplace.visualstudio.com/items?itemName=RASEN-WORKS.guns-tool
 
 
 ---
@@ -491,8 +493,8 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 
 ```json
 {
-  "gunsTool.alternatingLineBackground.evenLineColor": "rgba(255, 255, 200, 0.1)",
-  "gunsTool.alternatingLineBackground.oddLineColor": "rgba(200, 255, 255, 0.1)"
+  "gunsTool.alternatingLineBackground.evenLineColor": "rgba(255, 255, 200, 0.3)",
+  "gunsTool.alternatingLineBackground.oddLineColor": "rgba(200, 255, 255, 0.3)"
 }
 ```
 
