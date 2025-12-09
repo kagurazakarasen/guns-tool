@@ -92,7 +92,8 @@ https://gunsu.jp/2014/12/20/conventions/
 
 ### 機能：
 
- * 以下の全てのコマンドを順序立てて一括で実行します（BCCKSルビを青空文庫形式に変換する rubyConvertBccksToAozora は除外しています）。
+ * 以下の全てのコマンドを一括で実行します。
+ * デフォルト状態で青空文庫形式で書かれたテキストをBCCKSのアップ用に変更するように設定されています。
 
 ### 実行順序：
 
@@ -100,15 +101,17 @@ https://gunsu.jp/2014/12/20/conventions/
 2. カッコ内末尾の句点削除（removePunctuation）
 3. 全角！！、！？等を半角横指定に変換（tateCombiCharacters）
 4. ルビ変換：青空→BCCKS（rubyConvertAozoraToBccks）
-5. アルファベット単独文字を全角に（fullwidthSingleAlphabet）
-6. アルファベット略称（3文字以下）を全角に（fullwidthAcronym）
-7. 半角数値（２ケタ）を縦中横に（tateChuyokoTwoDigit）
-8. 三点リーダ修正（fixEllipsis）
-9. 感嘆符/疑問符の後にスペース挿入（spaceAfterPunct）
+5. 青空文庫形式傍点をBCCKS形式圏点へ変換（convertAozoraEmphasisToBccks）
+6. アルファベット単独文字を全角に（fullwidthSingleAlphabet）
+7. アルファベット略称（3文字以下）を全角に（fullwidthAcronym）
+8. 半角数値（２ケタ）を縦中横に（tateChuyokoTwoDigit）
+9. 三点リーダ修正（fixEllipsis）
+10. 感嘆符/疑問符の後にスペース挿入（spaceAfterPunct）
+11. ダッシュ記号整形（dashNormalization）
 
 ### 使用例
 
-コマンドパレット（Ctrl+Shift+P）から「GTool:全修正を一括で行う」を実行すると、上記の9つのコマンドが順番に実行されます。
+コマンドパレット（Ctrl+Shift+P）から「GTool:全修正を一括で行う」を実行すると、上記の11コマンドが順番に実行されます。
 
 BCCKSにアップする前のテキスト原稿ファイルに対してこのコマンドを一度実行するだけで一気に基本的整形が行われたりします。
 
@@ -116,7 +119,9 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 
 ### 設定で実行するコマンドの順序・ON/OFFを切り替える
 
-`GTool:全修正を一括で行う` は、設定で実行するコマンドの順序変更や個別コマンドの無効化ができます。VS Code の `settings.json` に以下のように記述します（例）：
+`GTool:全修正を一括で行う` は、設定で実行するコマンドの順序変更や個別コマンドの無効化ができます。VS Code の `settings.json` に以下のように記述します
+
+（例）：
 
 ```json
 {
