@@ -2,7 +2,7 @@
   "name": "guns-tool",
   "displayName": "GUNS TOOL",
   "description": "Guns tool ／ 小説用テキスト原稿整形ツール",
-  "version": "0.1.71",
+  "version": "0.1.72",
   "publisher": "RASEN-WORKS",
   "icon": "icon.png",
   "repository": {
@@ -38,6 +38,10 @@
       {
         "command": "guns-tool.rubyConvertBccksToAozora",
         "title": "GTool:ルビ変換2：BCCKS→青空"
+      },
+      {
+        "command": "guns-tool.convertAozoraEmphasisToBccks",
+        "title": "GTool:青空文庫形式傍点をBCCKS形式圏点へ変換"
       },
       {
         "command": "guns-tool.fullwidthSingleAlphabet",
@@ -111,6 +115,7 @@
             "guns-tool.removePunctuation",
             "guns-tool.tateCombiCharacters",
             "guns-tool.rubyConvertAozoraToBccks",
+            "guns-tool.convertAozoraEmphasisToBccks",
             "guns-tool.fullwidthSingleAlphabet",
             "guns-tool.fullwidthAcronym",
             "guns-tool.tateChuyokoTwoDigit",

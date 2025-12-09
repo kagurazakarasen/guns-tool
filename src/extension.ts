@@ -177,6 +177,40 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
+	const convertAozoraEmphasisDisposable = vscode.commands.registerCommand('guns-tool.convertAozoraEmphasisToBccks', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			vscode.window.showInformationMessage('アクティブなエディタがありません。');
+			return;
+		}
+
+		const document = editor.document;
+		const fullText = document.getText();
+
+		// 青空文庫形式の傍点 → BCCKS形式の圏点に変換
+		// パターン: 文字列［＃「文字列」に傍点］
+		const replacedText = fullText.replace(/(.+?)［＃「\1」に傍点］/g, (match, text) => {
+			// 文字列を1文字ずつ {文字}(﹅) に変換し、スペースで区切る
+			return Array.from(text as string)
+				.map(ch => `{${ch}}(﹅)`)
+				.join(' ');
+		});
+
+		// 変更がある場合のみ置換を実行
+		if (fullText !== replacedText) {
+			const fullRange = new vscode.Range(
+				document.positionAt(0),
+				document.positionAt(fullText.length)
+			);
+			await editor.edit(editBuilder => {
+				editBuilder.replace(fullRange, replacedText);
+			});
+			vscode.window.showInformationMessage('青空文庫形式の傍点をBCCKS形式の圏点に変換しました。');
+		} else {
+			vscode.window.showInformationMessage('青空文庫形式傍点の変換対象が見つかりませんでした。');
+		}
+	});
+
 	const fullwidthDisposable = vscode.commands.registerCommand('guns-tool.fullwidthSingleAlphabet', async () => {
 		const editor = vscode.window.activeTextEditor;
 		if (!editor) {
@@ -384,7 +418,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	context.subscriptions.push( insertDisposable, removeDisposable, tateCombiDisposable, rubyConvertDisposable, rubyConvertReverseDisposable, fullwidthDisposable, acronymDisposable, fullwidthDigitsToKanjiDisposable, tatechuyokoDigitDisposable, ellipsisFixDisposable, dashNormalizationDisposable);
+	context.subscriptions.push( insertDisposable, removeDisposable, tateCombiDisposable, rubyConvertDisposable, rubyConvertReverseDisposable, convertAozoraEmphasisDisposable, fullwidthDisposable, acronymDisposable, fullwidthDigitsToKanjiDisposable, tatechuyokoDigitDisposable, ellipsisFixDisposable, dashNormalizationDisposable);
 
 	// 選択範囲にBCCKS形式のルビを設定するコマンド
 	const setRubyDisposable = vscode.commands.registerCommand('guns-tool.setRubyForSelection', async () => {
@@ -599,6 +633,7 @@ export function activate(context: vscode.ExtensionContext) {
 			'guns-tool.removePunctuation',
 			'guns-tool.tateCombiCharacters',
 			'guns-tool.rubyConvertAozoraToBccks',
+			'guns-tool.convertAozoraEmphasisToBccks',
 			'guns-tool.fullwidthSingleAlphabet',
 			'guns-tool.fullwidthAcronym',
 			'guns-tool.tateChuyokoTwoDigit',
@@ -623,6 +658,7 @@ export function activate(context: vscode.ExtensionContext) {
 			'guns-tool.tateCombiCharacters': '全角！！、！？を縦中横に',
 			'guns-tool.rubyConvertAozoraToBccks': 'ルビ変換：青空→BCCKS',
 			'guns-tool.rubyConvertBccksToAozora': 'ルビ変換：BCCKS→青空',
+			'guns-tool.convertAozoraEmphasisToBccks':'青空文庫形式の傍点をBCCKS形式の圏点に変換',
 			'guns-tool.fullwidthSingleAlphabet': 'アルファベット単独文字を全角に',
 			'guns-tool.fullwidthAcronym': 'アルファベット略称（3文字以下）を全角に',
 			'guns-tool.tateChuyokoTwoDigit': '半角数値（2ケタ）を縦中横に',
