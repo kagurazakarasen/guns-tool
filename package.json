@@ -2,7 +2,7 @@
   "name": "guns-tool",
   "displayName": "GUNS TOOL",
   "description": "Guns tool ／ 小説用テキスト原稿整形ツール",
-  "version": "0.1.72",
+  "version": "0.1.73",
   "publisher": "RASEN-WORKS",
   "icon": "icon.png",
   "repository": {
@@ -42,6 +42,10 @@
       {
         "command": "guns-tool.convertAozoraEmphasisToBccks",
         "title": "GTool:青空文庫形式傍点をBCCKS形式圏点へ変換"
+      },
+      {
+        "command": "guns-tool.convertBccksEmphasisToAozora",
+        "title": "GTool:BCCKS形式圏点を青空文庫形式傍点へ変換"
       },
       {
         "command": "guns-tool.fullwidthSingleAlphabet",

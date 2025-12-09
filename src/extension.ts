@@ -211,6 +211,42 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
+	const convertBccksEmphasisToAozoraDisposable = vscode.commands.registerCommand('guns-tool.convertBccksEmphasisToAozora', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			vscode.window.showInformationMessage('アクティブなエディタがありません。');
+			return;
+		}
+
+		const document = editor.document;
+		const fullText = document.getText();
+
+		// BCCKS形式の圏点 → 青空文庫形式の傍点に変換
+		// パターン: {文}(﹅) {字}(﹅) {列}(﹅) のような連続した圏点を検出
+		// 圏点が連続している部分を1つの傍点記法にまとめる
+		const replacedText = fullText.replace(/(?:\{(.)\}\(﹅\)\s*)+/g, (match) => {
+			// マッチした部分から各文字を抽出
+			const chars = Array.from(match.matchAll(/\{(.)\}\(﹅\)/g))
+				.map(m => m[1])
+				.join('');
+			return `${chars}［＃「${chars}」に傍点］`;
+		});
+
+		// 変更がある場合のみ置換を実行
+		if (fullText !== replacedText) {
+			const fullRange = new vscode.Range(
+				document.positionAt(0),
+				document.positionAt(fullText.length)
+			);
+			await editor.edit(editBuilder => {
+				editBuilder.replace(fullRange, replacedText);
+			});
+			vscode.window.showInformationMessage('BCCKS形式の圏点を青空文庫形式の傍点に変換しました。');
+		} else {
+			vscode.window.showInformationMessage('BCCKS形式圏点の変換対象が見つかりませんでした。');
+		}
+	});
+
 	const fullwidthDisposable = vscode.commands.registerCommand('guns-tool.fullwidthSingleAlphabet', async () => {
 		const editor = vscode.window.activeTextEditor;
 		if (!editor) {
@@ -418,7 +454,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	context.subscriptions.push( insertDisposable, removeDisposable, tateCombiDisposable, rubyConvertDisposable, rubyConvertReverseDisposable, convertAozoraEmphasisDisposable, fullwidthDisposable, acronymDisposable, fullwidthDigitsToKanjiDisposable, tatechuyokoDigitDisposable, ellipsisFixDisposable, dashNormalizationDisposable);
+	context.subscriptions.push( insertDisposable, removeDisposable, tateCombiDisposable, rubyConvertDisposable, rubyConvertReverseDisposable, convertAozoraEmphasisDisposable, convertBccksEmphasisToAozoraDisposable, fullwidthDisposable, acronymDisposable, fullwidthDigitsToKanjiDisposable, tatechuyokoDigitDisposable, ellipsisFixDisposable, dashNormalizationDisposable);
 
 	// 選択範囲にBCCKS形式のルビを設定するコマンド
 	const setRubyDisposable = vscode.commands.registerCommand('guns-tool.setRubyForSelection', async () => {
@@ -669,7 +705,7 @@ export function activate(context: vscode.ExtensionContext) {
 		};
 
 		const lines = commands.map((cmd, idx) => `${idx + 1}. ${commandTitleMap[cmd] || cmd}`);
-		const message = `以下の ${commands.length} 件のコマンドを実行します。\n${lines.join('\n')}\nよろしいですか？`;
+		const message = `以下の ${commands.length} 件のコマンドを実行します。\n\n${lines.join('\n')}\n\nよろしいですか？`;
 
 		const confirm = await vscode.window.showInformationMessage(
 			message,

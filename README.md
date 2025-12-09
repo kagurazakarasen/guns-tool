@@ -63,6 +63,7 @@ https://gunsu.jp/2014/12/20/conventions/
 - [GTool:ルビ変換：青空→BCCKS](#guns-tool.rubyConvertAozoraToBccks)
 - [GTool:ルビ変換2：BCCKS→青空](#guns-tool.rubyConvertBccksToAozora)
 - [GTool:青空文庫形式傍点をBCCKS形式圏点へ変換](#guns-tool.convertAozoraEmphasisToBccks)
+- [GTool:BCCKS形式圏点を青空文庫形式傍点へ変換](#guns-tool.convertBccksEmphasisToAozora)
 - [GTool:アルファベット単独文字を全角に](#guns-tool.fullwidthSingleAlphabet)
 - [GTool:アルファベット略称（3文字以下）を全角に](#guns-tool.fullwidthAcronym)
 - [GTool:半角数値（２ケタ）を縦中横に](#guns-tool.tateChuyokoTwoDigit)
@@ -251,6 +252,28 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 入力：  重要［＃「重要」に傍点］な情報
 
 出力：  {重}(﹅) {要}(﹅)な情報
+
+---
+
+<a id="guns-tool.convertBccksEmphasisToAozora"></a>
+
+## コマンド：「GTool:BCCKS形式圏点を青空文庫形式傍点へ変換」
+ * guns-tool.convertBccksEmphasisToAozora
+
+### 機能：
+
+* BCCKS形式の圏点: {文}(﹅) {字}(﹅) {列}(﹅) → 青空文庫形式の傍点: 文字列［＃「文字列」に傍点］ に変換
+* 連続した圏点ルビを1つの傍点記法にまとめます。
+
+#### 動作例
+
+入力：  {電}(﹅) {子}(﹅) {機}(﹅) {器}(﹅)
+
+出力：  電子機器［＃「電子機器」に傍点］
+
+入力：  {重}(﹅) {要}(﹅)な情報
+
+出力：  重要［＃「重要」に傍点］な情報
 
 ---
 
@@ -625,6 +648,8 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 - rubyConvertAozoraToBccksコマンドを修正。｜記号なしでも文字種の切り替わりでルビ本文を自動判定できるように改善
 ### v0.1.72
 - 「青空文庫形式傍点をBCCKS形式圏点へ変換」コマンド追加
+### v0.1.73
+- 「BCCKS形式圏点を青空文庫形式傍点へ変換」コマンド追加
 
 
 ---
