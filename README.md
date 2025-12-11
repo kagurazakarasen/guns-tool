@@ -57,6 +57,9 @@ https://gunsu.jp/2014/12/20/conventions/
 - [GTool:全修正を一括で行う](#guns-tool.applyAllFixes)
 
 ### ファイル内全体修正コマンド
+
+※アクティブなファイル全体に作用するコマンドです。（選択範囲がある場合はその内部のみの動作となります）
+
 - [GTool:行頭にスペース挿入](#guns-tool.insertSpace)
 - [GTool:全角！！、！？等を半角横指定に変換](#guns-tool.tateCombiCharacters)
 - [GTool:全角数字を漢数字に](#guns-tool.fullwidthDigitsToKanji)
@@ -72,6 +75,9 @@ https://gunsu.jp/2014/12/20/conventions/
 - [GTool:ダッシュ整形](#guns-tool.dashNormalization)
 
 ### 選択範囲内修正コマンド
+
+※選択範囲指定が必要なコマンドです。
+
 - [GTool:選択範囲にBCCKSルビを設定](#guns-tool.setRubyForSelection)
 - [GTool:選択範囲に圏点ルビ（1文字毎）を設定](#guns-tool.setCirclePointRuby)
 - [GTool:選択範囲内アルファベット小文字を大文字化](#guns-tool.toUpperCase)
@@ -650,7 +656,8 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 - 「青空文庫形式傍点をBCCKS形式圏点へ変換」コマンド追加
 ### v0.1.73
 - 「BCCKS形式圏点を青空文庫形式傍点へ変換」コマンド追加
-
+### v0.1.90
+- すべてのファイル内全体修正コマンドに、範囲選択時は選択範囲内のみを処理する機能を追加
 
 ---
 ---

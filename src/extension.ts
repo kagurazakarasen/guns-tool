@@ -27,6 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 		const document = editor.document;
 		const insertChar = '　'; // 全角スペース
+		let processScope = 'ドキュメント全体';
 
 		// 行頭スキップ対象文字判定
 		const skipChars = ['『', '「', '【', '［', '　', ' ', '（', '〈', '《', '〔', '｛', '〖', '〘', '〚', '＃', '#', '＊', '*', '◆', '◇', '○', '●', '◎', '△', '▲', '▼', '▽', '～', '…', '‥', '・', '＝', '=', '≪', '―', '-', '0','1','2','3','4','5','6','7','8','9'];
@@ -40,14 +41,26 @@ export function activate(context: vscode.ExtensionContext) {
 			return skipChars.includes(firstChar);
 		};
 
+		// 選択範囲があるかチェック
+		const hasSelection = editor.selection && !editor.selection.isEmpty;
+		let startLine = 0;
+		let endLine = document.lineCount - 1;
+
+		if (hasSelection) {
+			startLine = editor.selection.start.line;
+			endLine = editor.selection.end.line;
+			processScope = '選択範囲内';
+		}
+
 		await editor.edit(editBuilder => {
-			for (let lineNumber = 0; lineNumber < document.lineCount; lineNumber++) {
+			for (let lineNumber = startLine; lineNumber <= endLine; lineNumber++) {
 				const line = document.lineAt(lineNumber);
 				if (!shouldSkip(line.text)) {
 					editBuilder.insert(line.range.start, insertChar);
 				}
 			}
 		});
+		vscode.window.showInformationMessage(`${processScope}の行頭にスペースを挿入しました。`);
 	});
 
 	const removeDisposable = vscode.commands.registerCommand('guns-tool.removePunctuation', async () => {
@@ -58,25 +71,36 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 		const document = editor.document;
-		const fullText = document.getText();
+		let targetText: string;
+		let targetRange: vscode.Range;
+		let processScope = 'ドキュメント全体';
+
+		// 選択範囲があるかチェック
+		if (editor.selection && !editor.selection.isEmpty) {
+			targetText = document.getText(editor.selection);
+			targetRange = editor.selection;
+			processScope = '選択範囲内';
+		} else {
+			targetText = document.getText();
+			targetRange = new vscode.Range(
+				document.positionAt(0),
+				document.positionAt(targetText.length)
+			);
+		}
 
 		// 。」 → 」、。』 → 』 に置換
-		const replacedText = fullText
+		const replacedText = targetText
 			.replace(/。」/g, '」')
 			.replace(/。』/g, '』');
 
 		// 変更がある場合のみ置換を実行
-		if (fullText !== replacedText) {
-			const fullRange = new vscode.Range(
-				document.positionAt(0),
-				document.positionAt(fullText.length)
-			);
+		if (targetText !== replacedText) {
 			await editor.edit(editBuilder => {
-				editBuilder.replace(fullRange, replacedText);
+				editBuilder.replace(targetRange, replacedText);
 			});
-			vscode.window.showInformationMessage('句読点を除去しました。');
+			vscode.window.showInformationMessage(`${processScope}の句読点を除去しました。`);
 		} else {
-			vscode.window.showInformationMessage('除去すべき句読点が、見つかりりませんでした。');
+			vscode.window.showInformationMessage(`${processScope}に除去すべき句読点が見つかりませんでした。`);
 		}
 	});
 
@@ -88,27 +112,38 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 		const document = editor.document;
-		const fullText = document.getText();
+		let targetText: string;
+		let targetRange: vscode.Range;
+		let processScope = 'ドキュメント全体';
+
+		// 選択範囲があるかチェック
+		if (editor.selection && !editor.selection.isEmpty) {
+			targetText = document.getText(editor.selection);
+			targetRange = editor.selection;
+			processScope = '選択範囲内';
+		} else {
+			targetText = document.getText();
+			targetRange = new vscode.Range(
+				document.positionAt(0),
+				document.positionAt(targetText.length)
+			);
+		}
 
 		// 全角！！、！？等を半角化し、[tcy]タグで囲む
-		const replacedText = fullText
+		const replacedText = targetText
 			.replace(/！！/g, '[tcy]!![/tcy]')
 			.replace(/！？/g, '[tcy]!?[/tcy]')
 			.replace(/？！/g, '[tcy]?![/tcy]')
 			.replace(/？？/g, '[tcy]??[/tcy]');
 
 		// 変更がある場合のみ置換を実行
-		if (fullText !== replacedText) {
-			const fullRange = new vscode.Range(
-				document.positionAt(0),
-				document.positionAt(fullText.length)
-			);
+		if (targetText !== replacedText) {
 			await editor.edit(editBuilder => {
-				editBuilder.replace(fullRange, replacedText);
+				editBuilder.replace(targetRange, replacedText);
 			});
-			vscode.window.showInformationMessage('縦組み対応の半角指定を適用しました。');
+			vscode.window.showInformationMessage(`${processScope}に縦組み対応の半角指定を適用しました。`);
 		} else {
-			vscode.window.showInformationMessage('！！、？？等の置換対象がありません。');
+			vscode.window.showInformationMessage(`${processScope}に！！、？？等の置換対象がありません。`);
 		}
 	});
 
@@ -120,12 +155,27 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 		const document = editor.document;
-		const fullText = document.getText();
+		let targetText: string;
+		let targetRange: vscode.Range;
+		let processScope = 'ドキュメント全体';
+
+		// 選択範囲があるかチェック
+		if (editor.selection && !editor.selection.isEmpty) {
+			targetText = document.getText(editor.selection);
+			targetRange = editor.selection;
+			processScope = '選択範囲内';
+		} else {
+			targetText = document.getText();
+			targetRange = new vscode.Range(
+				document.positionAt(0),
+				document.positionAt(targetText.length)
+			);
+		}
 
 		// 青空文庫形式 → BCCKS形式に変換
 		// 1. ｜記号あり: ｜本文《ルビ》 → {本文}(ルビ)
 		// 2. ｜記号なし: 《ルビ》の前の連続した文字種（漢字、ひらがな、カタカナ等）を本文とみなす
-		let replacedText = fullText;
+		let replacedText = targetText;
 		
 		// まず｜記号ありのパターンを変換
 		replacedText = replacedText.replace(/｜([^《]*?)《([^》]*?)》/g, '{$1}($2)');
@@ -135,17 +185,13 @@ export function activate(context: vscode.ExtensionContext) {
 		replacedText = replacedText.replace(/([一-龯々〆ヵヶ]+|[ぁ-ん]+|[ァ-ヴー]+|[ａ-ｚＡ-Ｚa-zA-Z]+|[０-９0-9]+)《([^》]*?)》/g, '{$1}($2)');
 
 		// 変更がある場合のみ置換を実行
-		if (fullText !== replacedText) {
-			const fullRange = new vscode.Range(
-				document.positionAt(0),
-				document.positionAt(fullText.length)
-			);
+		if (targetText !== replacedText) {
 			await editor.edit(editBuilder => {
-				editBuilder.replace(fullRange, replacedText);
+				editBuilder.replace(targetRange, replacedText);
 			});
-			vscode.window.showInformationMessage('ルビを青空文庫形式からBCCKS形式に変換しました。');
+			vscode.window.showInformationMessage(`${processScope}のルビを青空文庫形式からBCCKS形式に変換しました。`);
 		} else {
-			vscode.window.showInformationMessage('青空文庫形式ルビ置換対象がありません。');
+			vscode.window.showInformationMessage(`${processScope}に青空文庫形式ルビ置換対象がありません。`);
 		}
 	});
 
@@ -157,23 +203,34 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 		const document = editor.document;
-		const fullText = document.getText();
+		let targetText: string;
+		let targetRange: vscode.Range;
+		let processScope = 'ドキュメント全体';
+
+		// 選択範囲があるかチェック
+		if (editor.selection && !editor.selection.isEmpty) {
+			targetText = document.getText(editor.selection);
+			targetRange = editor.selection;
+			processScope = '選択範囲内';
+		} else {
+			targetText = document.getText();
+			targetRange = new vscode.Range(
+				document.positionAt(0),
+				document.positionAt(targetText.length)
+			);
+		}
 
 		// BCCKS形式 {本文}(ルビ) → 青空文庫形式 |本文《ルビ》 に変換
-		const replacedText = fullText.replace(/\{([^}]*?)\}\(([^)]*?)\)/g, '｜$1《$2》');
+		const replacedText = targetText.replace(/\{([^}]*?)\}\(([^)]*?)\)/g, '｜$1《$2》');
 
 		// 変更がある場合のみ置換を実行
-		if (fullText !== replacedText) {
-			const fullRange = new vscode.Range(
-				document.positionAt(0),
-				document.positionAt(fullText.length)
-			);
+		if (targetText !== replacedText) {
 			await editor.edit(editBuilder => {
-				editBuilder.replace(fullRange, replacedText);
+				editBuilder.replace(targetRange, replacedText);
 			});
-			vscode.window.showInformationMessage('ルビをBCCKS形式から青空文庫形式に変換しました。');
+			vscode.window.showInformationMessage(`${processScope}のルビをBCCKS形式から青空文庫形式に変換しました。`);
 		} else {
-			vscode.window.showInformationMessage('BCCKS形式ルビ置換対象がありません。');
+			vscode.window.showInformationMessage(`${processScope}にBCCKS形式ルビ置換対象がありません。`);
 		}
 	});
 
@@ -185,11 +242,26 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 		const document = editor.document;
-		const fullText = document.getText();
+		let targetText: string;
+		let targetRange: vscode.Range;
+		let processScope = 'ドキュメント全体';
+
+		// 選択範囲があるかチェック
+		if (editor.selection && !editor.selection.isEmpty) {
+			targetText = document.getText(editor.selection);
+			targetRange = editor.selection;
+			processScope = '選択範囲内';
+		} else {
+			targetText = document.getText();
+			targetRange = new vscode.Range(
+				document.positionAt(0),
+				document.positionAt(targetText.length)
+			);
+		}
 
 		// 青空文庫形式の傍点 → BCCKS形式の圏点に変換
 		// パターン: 文字列［＃「文字列」に傍点］
-		const replacedText = fullText.replace(/(.+?)［＃「\1」に傍点］/g, (match, text) => {
+		const replacedText = targetText.replace(/(.+?)［＃「\1」に傍点］/g, (match, text) => {
 			// 文字列を1文字ずつ {文字}(﹅) に変換し、スペースで区切る
 			return Array.from(text as string)
 				.map(ch => `{${ch}}(﹅)`)
@@ -197,17 +269,13 @@ export function activate(context: vscode.ExtensionContext) {
 		});
 
 		// 変更がある場合のみ置換を実行
-		if (fullText !== replacedText) {
-			const fullRange = new vscode.Range(
-				document.positionAt(0),
-				document.positionAt(fullText.length)
-			);
+		if (targetText !== replacedText) {
 			await editor.edit(editBuilder => {
-				editBuilder.replace(fullRange, replacedText);
+				editBuilder.replace(targetRange, replacedText);
 			});
-			vscode.window.showInformationMessage('青空文庫形式の傍点をBCCKS形式の圏点に変換しました。');
+			vscode.window.showInformationMessage(`${processScope}の青空文庫形式の傍点をBCCKS形式の圏点に変換しました。`);
 		} else {
-			vscode.window.showInformationMessage('青空文庫形式傍点の変換対象が見つかりませんでした。');
+			vscode.window.showInformationMessage(`${processScope}に青空文庫形式傍点の変換対象が見つかりませんでした。`);
 		}
 	});
 
@@ -219,12 +287,27 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 		const document = editor.document;
-		const fullText = document.getText();
+		let targetText: string;
+		let targetRange: vscode.Range;
+		let processScope = 'ドキュメント全体';
+
+		// 選択範囲があるかチェック
+		if (editor.selection && !editor.selection.isEmpty) {
+			targetText = document.getText(editor.selection);
+			targetRange = editor.selection;
+			processScope = '選択範囲内';
+		} else {
+			targetText = document.getText();
+			targetRange = new vscode.Range(
+				document.positionAt(0),
+				document.positionAt(targetText.length)
+			);
+		}
 
 		// BCCKS形式の圏点 → 青空文庫形式の傍点に変換
 		// パターン: {文}(﹅) {字}(﹅) {列}(﹅) のような連続した圏点を検出
 		// 圏点が連続している部分を1つの傍点記法にまとめる
-		const replacedText = fullText.replace(/(?:\{(.)\}\(﹅\)\s*)+/g, (match) => {
+		const replacedText = targetText.replace(/(?:\{(.)\}\(﹅\)\s*)+/g, (match) => {
 			// マッチした部分から各文字を抽出
 			const chars = Array.from(match.matchAll(/\{(.)\}\(﹅\)/g))
 				.map(m => m[1])
@@ -233,17 +316,13 @@ export function activate(context: vscode.ExtensionContext) {
 		});
 
 		// 変更がある場合のみ置換を実行
-		if (fullText !== replacedText) {
-			const fullRange = new vscode.Range(
-				document.positionAt(0),
-				document.positionAt(fullText.length)
-			);
+		if (targetText !== replacedText) {
 			await editor.edit(editBuilder => {
-				editBuilder.replace(fullRange, replacedText);
+				editBuilder.replace(targetRange, replacedText);
 			});
-			vscode.window.showInformationMessage('BCCKS形式の圏点を青空文庫形式の傍点に変換しました。');
+			vscode.window.showInformationMessage(`${processScope}のBCCKS形式の圏点を青空文庫形式の傍点に変換しました。`);
 		} else {
-			vscode.window.showInformationMessage('BCCKS形式圏点の変換対象が見つかりませんでした。');
+			vscode.window.showInformationMessage(`${processScope}にBCCKS形式圏点の変換対象が見つかりませんでした。`);
 		}
 	});
 
@@ -337,7 +416,18 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 		const document = editor.document;
-		const fullText = document.getText();
+		let targetText: string;
+		let targetRange: vscode.Range;
+		let processScope = 'ドキュメント全体';
+
+		if (editor.selection && !editor.selection.isEmpty) {
+			targetText = document.getText(editor.selection);
+			targetRange = editor.selection;
+			processScope = '選択範囲内';
+		} else {
+			targetText = document.getText();
+			targetRange = new vscode.Range(document.positionAt(0), document.positionAt(targetText.length));
+		}
 
 		// 全角数字（０〜９）を漢数字に置換する（０->〇, １->一, ... ９->九）
 		const map: { [k: string]: string } = {
@@ -353,16 +443,15 @@ export function activate(context: vscode.ExtensionContext) {
 			'９': '九'
 		};
 
-		const replacedText = fullText.replace(/[０-９]/g, ch => map[ch] || ch);
+		const replacedText = targetText.replace(/[０-９]/g, ch => map[ch] || ch);
 
-		if (fullText !== replacedText) {
-			const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(fullText.length));
+		if (targetText !== replacedText) {
 			await editor.edit(editBuilder => {
-				editBuilder.replace(fullRange, replacedText);
+				editBuilder.replace(targetRange, replacedText);
 			});
-			vscode.window.showInformationMessage('全角数字を漢数字に変換しました。');
+			vscode.window.showInformationMessage(`${processScope}の全角数字を漢数字に変換しました。`);
 		} else {
-			vscode.window.showInformationMessage('変換対象の全角数字が見つかりませんでした。');
+			vscode.window.showInformationMessage(`${processScope}に変換対象の全角数字が見つかりませんでした。`);
 		}
 	});
 
@@ -402,23 +491,33 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 		const document = editor.document;
-		const fullText = document.getText();
+		let targetText: string;
+		let targetRange: vscode.Range;
+		let processScope = 'ドキュメント全体';
+
+		if (editor.selection && !editor.selection.isEmpty) {
+			targetText = document.getText(editor.selection);
+			targetRange = editor.selection;
+			processScope = '選択範囲内';
+		} else {
+			targetText = document.getText();
+			targetRange = new vscode.Range(document.positionAt(0), document.positionAt(targetText.length));
+		}
 
 		// 「・・・」「‥」「…」の連続を「……」に統一する
 		// 単独の「・」はスキップする。「‥」「…」の単独や複数、「・」が2文字以上は対象
 		// パターン1: 「‥」「…」の1文字以上の連続
 		// パターン2: 「・」が2文字以上の連続
-		let replacedText = fullText.replace(/[‥…]+/g, '……');
+		let replacedText = targetText.replace(/[‥…]+/g, '……');
 		replacedText = replacedText.replace(/・{2,}/g, '……');
 
-		if (fullText !== replacedText) {
-			const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(fullText.length));
+		if (targetText !== replacedText) {
 			await editor.edit(editBuilder => {
-				editBuilder.replace(fullRange, replacedText);
+				editBuilder.replace(targetRange, replacedText);
 			});
-			vscode.window.showInformationMessage('三点リーダを統一しました。');
+			vscode.window.showInformationMessage(`${processScope}の三点リーダを統一しました。`);
 		} else {
-			vscode.window.showInformationMessage('三点リーダ変換対象が見つかりませんでした。');
+			vscode.window.showInformationMessage(`${processScope}に三点リーダ変換対象が見つかりませんでした。`);
 		}
 	});
 
@@ -430,11 +529,22 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 		const document = editor.document;
-		const fullText = document.getText();
+		let targetText: string;
+		let targetRange: vscode.Range;
+		let processScope = 'ドキュメント全体';
+
+		if (editor.selection && !editor.selection.isEmpty) {
+			targetText = document.getText(editor.selection);
+			targetRange = editor.selection;
+			processScope = '選択範囲内';
+		} else {
+			targetText = document.getText();
+			targetRange = new vscode.Range(document.positionAt(0), document.positionAt(targetText.length));
+		}
 
 		// 各種ダッシュパターンをU+2500「──」に統一する
 		// ーー（全角音長音符）、--（半角ハイフン）、U+2014（——）、U+2015（――）などを置換
-		let replacedText = fullText
+		let replacedText = targetText
 			.replace(/ーー/g, '──')           // 全角音長音符
 			.replace(/--/g, '──')            // 半角ハイフン
 			.replace(/\u2014\u2014/g, '──')  // U+2014 EM DASH
@@ -443,14 +553,13 @@ export function activate(context: vscode.ExtensionContext) {
 			.replace(/−−/g, '──')           // マイナス記号
 			.replace(/＿＿/g, '──');         // 全角アンダースコア
 
-		if (fullText !== replacedText) {
-			const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(fullText.length));
+		if (targetText !== replacedText) {
 			await editor.edit(editBuilder => {
-				editBuilder.replace(fullRange, replacedText);
+				editBuilder.replace(targetRange, replacedText);
 			});
-			vscode.window.showInformationMessage('ダッシュを統一しました。');
+			vscode.window.showInformationMessage(`${processScope}のダッシュを統一しました。`);
 		} else {
-			vscode.window.showInformationMessage('ダッシュ変換対象が見つかりませんでした。');
+			vscode.window.showInformationMessage(`${processScope}にダッシュ変換対象が見つかりませんでした。`);
 		}
 	});
 
@@ -634,22 +743,32 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 		const document = editor.document;
-		const fullText = document.getText();
+		let targetText: string;
+		let targetRange: vscode.Range;
+		let processScope = 'ドキュメント全体';
+
+		if (editor.selection && !editor.selection.isEmpty) {
+			targetText = document.getText(editor.selection);
+			targetRange = editor.selection;
+			processScope = '選択範囲内';
+		} else {
+			targetText = document.getText();
+			targetRange = new vscode.Range(document.positionAt(0), document.positionAt(targetText.length));
+		}
 
 		// 「！」または「？」の直後に空白がない場合、全角スペースを挿入する
 		// ただし直後の文字が閉じ括弧/引用符（例：」『）】〉》など）、[（縦中横タグ開始）、または他の punctuation（!！?？）である場合は挿入しない
 		// 既に空白や改行がある場合はスキップされる（正規表現で次の文字が空白でない場合のみマッチ）
 		// 対象は全角と半角の ! と ? を含む
-		const replacedText = fullText.replace(/([!！?？])(?![」『）〕】〉》\[!！?？])([^\s\u3000\n\r])/gu, '$1　$2');
+		const replacedText = targetText.replace(/([!！?？])(?![」『）〕】〉》\[!！?？])([^\s\u3000\n\r])/gu, '$1　$2');
 
-		if (fullText !== replacedText) {
-			const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(fullText.length));
+		if (targetText !== replacedText) {
 			await editor.edit(editBuilder => {
-				editBuilder.replace(fullRange, replacedText);
+				editBuilder.replace(targetRange, replacedText);
 			});
-			vscode.window.showInformationMessage('感嘆符/疑問符の後にスペースを挿入しました。');
+			vscode.window.showInformationMessage(`${processScope}の感嘆符/疑問符の後にスペースを挿入しました。`);
 		} else {
-			vscode.window.showInformationMessage('感嘆符/疑問符の変換対象が見つかりませんでした。');
+			vscode.window.showInformationMessage(`${processScope}に感嘆符/疑問符の変換対象が見つかりませんでした。`);
 		}
 	});
 
