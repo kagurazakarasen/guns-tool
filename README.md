@@ -57,6 +57,9 @@ https://gunsu.jp/2014/12/20/conventions/
 - [GTool:全修正を一括で行う](#guns-tool.applyAllFixes)
 
 ### ファイル内全体修正コマンド
+
+※アクティブなファイル全体に作用するコマンドです。（選択範囲がある場合はその内部のみの動作となります）
+
 - [GTool:行頭にスペース挿入](#guns-tool.insertSpace)
 - [GTool:全角！！、！？等を半角横指定に変換](#guns-tool.tateCombiCharacters)
 - [GTool:全角数字を漢数字に](#guns-tool.fullwidthDigitsToKanji)
@@ -72,6 +75,9 @@ https://gunsu.jp/2014/12/20/conventions/
 - [GTool:ダッシュ整形](#guns-tool.dashNormalization)
 
 ### 選択範囲内修正コマンド
+
+※選択範囲指定が必要なコマンドです。
+
 - [GTool:選択範囲にBCCKSルビを設定](#guns-tool.setRubyForSelection)
 - [GTool:選択範囲に圏点ルビ（1文字毎）を設定](#guns-tool.setCirclePointRuby)
 - [GTool:選択範囲内アルファベット小文字を大文字化](#guns-tool.toUpperCase)
