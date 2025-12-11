@@ -27,6 +27,8 @@
 - v0.1.71 rubyConvertAozoraToBccksコマンドを修正。｜記号なしでも文字種の切り替わりでルビ本文を自動判定できるように改善
 - v0.1.72「青空文庫形式傍点をBCCKS形式圏点へ変換」コマンド追加
 - v0.1.73「BCCKS形式圏点を青空文庫形式傍点へ変換」コマンド追加
+- v0.1.90 すべてのファイル内全体修正コマンドに、範囲選択時は選択範囲内のみを処理する機能を追加
+
 
 ---
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
