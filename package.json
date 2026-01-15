@@ -90,7 +90,7 @@
       },
       {
         "command": "guns-tool.addNarouEmphasis",
-        "title": "GTool:なろう形式傍点追加"
+        "title": "GTool:なろう形式傍点挿入"
       },
       {
         "command": "guns-tool.toUpperCase",

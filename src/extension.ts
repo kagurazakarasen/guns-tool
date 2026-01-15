@@ -633,7 +633,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(setCirclePointRubyDisposable);
 
-	// なろう形式傍点追加コマンド
+	// なろう形式傍点挿入コマンド
 	const addNarouEmphasisDisposable = vscode.commands.registerCommand('guns-tool.addNarouEmphasis', async () => {
 		const editor = vscode.window.activeTextEditor;
 		if (!editor) {
