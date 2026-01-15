@@ -451,7 +451,7 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 
 <a id="guns-tool.addNarouEmphasis"></a>
 
-## コマンド：「GTool:なろう形式傍点追加」
+## コマンド：「GTool:なろう形式傍点挿入」
  * guns-tool.addNarouEmphasis
 
 ### 機能：
