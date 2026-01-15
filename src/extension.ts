@@ -633,6 +633,36 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(setCirclePointRubyDisposable);
 
+	// なろう形式傍点追加コマンド
+	const addNarouEmphasisDisposable = vscode.commands.registerCommand('guns-tool.addNarouEmphasis', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			vscode.window.showInformationMessage('アクティブなエディタがありません。');
+			return;
+		}
+
+		const selections = editor.selections;
+		if (selections.every(sel => sel.isEmpty)) {
+			vscode.window.showInformationMessage('なろう形式傍点を設定するには、テキストを選択してください。');
+			return;
+		}
+
+		await editor.edit(editBuilder => {
+			for (const sel of selections) {
+				if (sel.isEmpty) { continue; }
+				const text = editor.document.getText(sel);
+				// 1文字ずつ |字《・》 に変換
+				const emphasisText = Array.from(text)
+					.map(ch => `|${ch}《・》`)
+					.join('');
+				editBuilder.replace(sel, emphasisText);
+			}
+		});
+		vscode.window.showInformationMessage('選択範囲になろう形式傍点を設定しました。');
+	});
+
+	context.subscriptions.push(addNarouEmphasisDisposable);
+
 	// 選択範囲の小文字を大文字に変換するコマンド
 	const toUpperCaseDisposable = vscode.commands.registerCommand('guns-tool.toUpperCase', async () => {
 		const editor = vscode.window.activeTextEditor;
