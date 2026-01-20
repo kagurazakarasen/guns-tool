@@ -610,7 +610,122 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	context.subscriptions.push( insertDisposable, removeDisposable, tateCombiDisposable, rubyConvertDisposable, rubyConvertReverseDisposable, convertAozoraEmphasisDisposable, convertBccksEmphasisToAozoraDisposable, fullwidthDisposable, acronymDisposable, fullwidthDigitsToKanjiDisposable, halfwidthDigitsToFullwidthDisposable, tatechuyokoDigitDisposable, ellipsisFixDisposable, dashNormalizationDisposable);
+	const kanjiToFullwidthDigitsDisposable = vscode.commands.registerCommand('guns-tool.kanjiToFullwidthDigits', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			vscode.window.showInformationMessage('アクティブなエディタがありません。');
+			return;
+		}
+
+		const document = editor.document;
+		let targetText: string;
+		let targetRange: vscode.Range;
+		let processScope = 'ドキュメント全体';
+
+		if (editor.selection && !editor.selection.isEmpty) {
+			targetText = document.getText(editor.selection);
+			targetRange = editor.selection;
+			processScope = '選択範囲内';
+		} else {
+			targetText = document.getText();
+			targetRange = new vscode.Range(document.positionAt(0), document.positionAt(targetText.length));
+		}
+
+		// 漢数字を全角数字に変換する関数
+		const convertKanjiToFullwidth = (text: string): string => {
+			// 漢数字の対応表
+			const kanjiMap: { [key: string]: string } = {
+				'〇': '０',
+				'零': '０',
+				'一': '１',
+				'二': '２',
+				'三': '３',
+				'四': '４',
+				'五': '５',
+				'六': '６',
+				'七': '７',
+				'八': '８',
+				'九': '９'
+			};
+
+			// 複雑な漢数字の変換（十、百、千などを含む）
+			const convertComplexKanji = (str: string): string => {
+				// 「十」「百」「千」「万」などを含む複雑な数値パターンを処理
+				const pattern = /([〇零一二三四五六七八九十百千万]+)/g;
+				return str.replace(pattern, (match) => {
+					// 「十」などの位を含む場合は数値計算して変換
+					if (/[十百千万]/.test(match)) {
+						let num = 0;
+						let temp = 0;
+						const chars = Array.from(match);
+
+						for (let i = 0; i < chars.length; i++) {
+							const ch = chars[i];
+							if (ch === '十') {
+								temp = temp === 0 ? 10 : temp * 10;
+								num += temp;
+								temp = 0;
+							} else if (ch === '百') {
+								temp = temp === 0 ? 100 : temp * 100;
+								num += temp;
+								temp = 0;
+							} else if (ch === '千') {
+								temp = temp === 0 ? 1000 : temp * 1000;
+								num += temp;
+								temp = 0;
+							} else if (ch === '万') {
+								num = (num + temp) * 10000;
+								temp = 0;
+							} else if (ch === '〇' || ch === '零') {
+								temp = temp * 10;
+							} else if (ch === '一') {
+								temp = temp * 10 + 1;
+							} else if (ch === '二') {
+								temp = temp * 10 + 2;
+							} else if (ch === '三') {
+								temp = temp * 10 + 3;
+							} else if (ch === '四') {
+								temp = temp * 10 + 4;
+							} else if (ch === '五') {
+								temp = temp * 10 + 5;
+							} else if (ch === '六') {
+								temp = temp * 10 + 6;
+							} else if (ch === '七') {
+								temp = temp * 10 + 7;
+							} else if (ch === '八') {
+								temp = temp * 10 + 8;
+							} else if (ch === '九') {
+								temp = temp * 10 + 9;
+							}
+						}
+						num += temp;
+
+						// 数値を全角数字に変換
+						const numStr = num.toString();
+						return numStr.split('').map(d => String.fromCharCode(d.charCodeAt(0) + 0xFEE0)).join('');
+					} else {
+						// 単純な漢数字の1文字ずつ変換
+						return Array.from(match).map(ch => kanjiMap[ch] || ch).join('');
+					}
+				});
+			};
+
+			return convertComplexKanji(text);
+		};
+
+		const replacedText = convertKanjiToFullwidth(targetText);
+
+		if (targetText !== replacedText) {
+			await editor.edit(editBuilder => {
+				editBuilder.replace(targetRange, replacedText);
+			});
+			vscode.window.showInformationMessage(`${processScope}の漢数字を全角数字に変換しました。`);
+		} else {
+			vscode.window.showInformationMessage(`${processScope}に漢数字の変換対象が見つかりませんでした。`);
+		}
+	});
+
+	context.subscriptions.push( insertDisposable, removeDisposable, tateCombiDisposable, rubyConvertDisposable, rubyConvertReverseDisposable, convertAozoraEmphasisDisposable, convertBccksEmphasisToAozoraDisposable, fullwidthDisposable, acronymDisposable, fullwidthDigitsToKanjiDisposable, halfwidthDigitsToFullwidthDisposable, tatechuyokoDigitDisposable, ellipsisFixDisposable, dashNormalizationDisposable, kanjiToFullwidthDigitsDisposable);
 
 	// 選択範囲にBCCKS形式のルビを設定するコマンド
 	const setRubyDisposable = vscode.commands.registerCommand('guns-tool.setRubyForSelection', async () => {
@@ -897,7 +1012,8 @@ export function activate(context: vscode.ExtensionContext) {
 			'guns-tool.fixEllipsis': '三点リーダ修正',
 			'guns-tool.spaceAfterPunct': '感嘆符/疑問符の後にスペース',
 			'guns-tool.fullwidthDigitsToKanji': '全角数字を漢数字に',
-			'guns-tool.dashNormalization': 'ダッシュ整形'
+			'guns-tool.dashNormalization': 'ダッシュ整形',
+			'guns-tool.kanjiToFullwidthDigits': '漢数字を全角数字に'
 		};
 
 		const lines = commands.map((cmd, idx) => `${idx + 1}. ${commandTitleMap[cmd] || cmd}`);

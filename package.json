@@ -2,7 +2,7 @@
   "name": "guns-tool",
   "displayName": "GUNS TOOL",
   "description": "Guns tool ／ 小説用テキスト原稿整形ツール",
-  "version": "0.1.92",
+  "version": "0.1.93",
   "publisher": "RASEN-WORKS",
   "icon": "icon.png",
   "repository": {
@@ -78,6 +78,10 @@
       {
         "command": "guns-tool.dashNormalization",
         "title": "GTool:ダッシュ整形"
+      },
+      {
+        "command": "guns-tool.kanjiToFullwidthDigits",
+        "title": "GTool:漢数字を全角数字に"
       },
       {
         "command": "guns-tool.applyAllFixes",

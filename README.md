@@ -63,6 +63,7 @@ https://gunsu.jp/2014/12/20/conventions/
 - [GTool:行頭にスペース挿入](#guns-tool.insertSpace)
 - [GTool:全角！！、！？等を半角横指定に変換](#guns-tool.tateCombiCharacters)
 - [GTool:全角数字を漢数字に](#guns-tool.fullwidthDigitsToKanji)
+- [GTool:漢数字を全角数字に](#guns-tool.kanjiToFullwidthDigits)
 - [GTool:半角数字を全角数字に](#guns-tool.halfwidthDigitsToFullwidth)
 - [GTool:ルビ変換：青空→BCCKS](#guns-tool.rubyConvertAozoraToBccks)
 - [GTool:ルビ変換2：BCCKS→青空](#guns-tool.rubyConvertBccksToAozora)
@@ -217,6 +218,30 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 入力: 価格は123円です → 出力: 価格は１２３円です
 
 入力: コード番号001 → 出力: コード番号００１
+
+---
+<a id="guns-tool.kanjiToFullwidthDigits"></a>
+
+## コマンド：「GTool:漢数字を全角数字に」
+ * guns-tool.kanjiToFullwidthDigits
+
+### 機能：
+
+ * ドキュメント内の漢数字（一、二、三、十、百、千、万など）を対応する全角数字に変換します。
+ * 単純な漢数字（〇、零、一～九）だけでなく、位を含む複雑な漢数字（十、百、千、万）も数値計算により変換します。
+ * 変換ルール: `一` → `１`, `二` → `２`, `三` → `３`, `四` → `４`, `五` → `５`, `六` → `６`, `七` → `７`, `八` → `８`, `九` → `９`, `〇/零` → `０`
+
+#### 動作例
+
+入力: 価格は一二三円です → 出力: 価格は１２３円です
+
+入力: 十個です → 出力: １０個です
+
+入力: 二十三人 → 出力: ２３人
+
+入力: 千二百三十四 → 出力: １２３４
+
+入力: 二万円 → 出力: ２００００円
 
 ---
 <a id="guns-tool.rubyConvertAozoraToBccks"></a>
