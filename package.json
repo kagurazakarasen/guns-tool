@@ -2,7 +2,7 @@
   "name": "guns-tool",
   "displayName": "GUNS TOOL",
   "description": "Guns tool ／ 小説用テキスト原稿整形ツール",
-  "version": "0.1.91",
+  "version": "0.1.92",
   "publisher": "RASEN-WORKS",
   "icon": "icon.png",
   "repository": {
@@ -70,6 +70,10 @@
       {
         "command": "guns-tool.fullwidthDigitsToKanji",
         "title": "GTool:全角数字を漢数字に"
+      },
+      {
+        "command": "guns-tool.halfwidthDigitsToFullwidth",
+        "title": "GTool:半角数字を全角数字に"
       },
       {
         "command": "guns-tool.dashNormalization",

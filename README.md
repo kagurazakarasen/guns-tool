@@ -63,6 +63,7 @@ https://gunsu.jp/2014/12/20/conventions/
 - [GTool:行頭にスペース挿入](#guns-tool.insertSpace)
 - [GTool:全角！！、！？等を半角横指定に変換](#guns-tool.tateCombiCharacters)
 - [GTool:全角数字を漢数字に](#guns-tool.fullwidthDigitsToKanji)
+- [GTool:半角数字を全角数字に](#guns-tool.halfwidthDigitsToFullwidth)
 - [GTool:ルビ変換：青空→BCCKS](#guns-tool.rubyConvertAozoraToBccks)
 - [GTool:ルビ変換2：BCCKS→青空](#guns-tool.rubyConvertBccksToAozora)
 - [GTool:青空文庫形式傍点をBCCKS形式圏点へ変換](#guns-tool.convertAozoraEmphasisToBccks)
@@ -199,6 +200,23 @@ BCCKSにアップする前のテキスト原稿ファイルに対してこのコ
 入力: 価格は１２３円です → 出力: 価格は一二三円です
 
 入力: コード番号００１ → 出力: コード番号〇〇一
+
+---
+<a id="guns-tool.halfwidthDigitsToFullwidth"></a>
+
+## コマンド：「GTool:半角数字を全角数字に」
+ * guns-tool.halfwidthDigitsToFullwidth
+
+### 機能：
+
+ * ドキュメント内の半角数字（0〜9）を対応する全角数字に変換します。
+ * 変換ルール: `0` → `０`, `1` → `１`, `2` → `２`, `3` → `３`, `4` → `４`, `5` → `５`, `6` → `６`, `7` → `７`, `8` → `８`, `9` → `９`。
+
+#### 動作例
+
+入力: 価格は123円です → 出力: 価格は１２３円です
+
+入力: コード番号001 → 出力: コード番号００１
 
 ---
 <a id="guns-tool.rubyConvertAozoraToBccks"></a>

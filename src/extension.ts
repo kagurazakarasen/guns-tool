@@ -455,6 +455,53 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
+	const halfwidthDigitsToFullwidthDisposable = vscode.commands.registerCommand('guns-tool.halfwidthDigitsToFullwidth', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			vscode.window.showInformationMessage('アクティブなエディタがありません。');
+			return;
+		}
+
+		const document = editor.document;
+		let targetText: string;
+		let targetRange: vscode.Range;
+		let processScope = 'ドキュメント全体';
+
+		if (editor.selection && !editor.selection.isEmpty) {
+			targetText = document.getText(editor.selection);
+			targetRange = editor.selection;
+			processScope = '選択範囲内';
+		} else {
+			targetText = document.getText();
+			targetRange = new vscode.Range(document.positionAt(0), document.positionAt(targetText.length));
+		}
+
+		// 半角数字（0〜9）を全角数字に置換する（0->０, 1->１, ... 9->９）
+		const map: { [k: string]: string } = {
+			'0': '０',
+			'1': '１',
+			'2': '２',
+			'3': '３',
+			'4': '４',
+			'5': '５',
+			'6': '６',
+			'7': '７',
+			'8': '８',
+			'9': '９'
+		};
+
+		const replacedText = targetText.replace(/[0-9]/g, ch => map[ch] || ch);
+
+		if (targetText !== replacedText) {
+			await editor.edit(editBuilder => {
+				editBuilder.replace(targetRange, replacedText);
+			});
+			vscode.window.showInformationMessage(`${processScope}の半角数字を全角数字に変換しました。`);
+		} else {
+			vscode.window.showInformationMessage(`${processScope}に変換対象の半角数字が見つかりませんでした。`);
+		}
+	});
+
 	const tatechuyokoDigitDisposable = vscode.commands.registerCommand('guns-tool.tateChuyokoTwoDigit', async () => {
 		const editor = vscode.window.activeTextEditor;
 		if (!editor) {
@@ -563,7 +610,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	context.subscriptions.push( insertDisposable, removeDisposable, tateCombiDisposable, rubyConvertDisposable, rubyConvertReverseDisposable, convertAozoraEmphasisDisposable, convertBccksEmphasisToAozoraDisposable, fullwidthDisposable, acronymDisposable, fullwidthDigitsToKanjiDisposable, tatechuyokoDigitDisposable, ellipsisFixDisposable, dashNormalizationDisposable);
+	context.subscriptions.push( insertDisposable, removeDisposable, tateCombiDisposable, rubyConvertDisposable, rubyConvertReverseDisposable, convertAozoraEmphasisDisposable, convertBccksEmphasisToAozoraDisposable, fullwidthDisposable, acronymDisposable, fullwidthDigitsToKanjiDisposable, halfwidthDigitsToFullwidthDisposable, tatechuyokoDigitDisposable, ellipsisFixDisposable, dashNormalizationDisposable);
 
 	// 選択範囲にBCCKS形式のルビを設定するコマンド
 	const setRubyDisposable = vscode.commands.registerCommand('guns-tool.setRubyForSelection', async () => {
