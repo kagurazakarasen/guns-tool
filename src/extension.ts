@@ -862,7 +862,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(toUpperCaseDisposable);
 
-	// 選択範囲内の半角英数字を全角に変換するコマンド
+	// 半角英数字を全角に変換するコマンド
 	const halfwidthToFullwidthDisposable = vscode.commands.registerCommand('guns-tool.halfwidthToFullwidth', async () => {
 		const editor = vscode.window.activeTextEditor;
 		if (!editor) {
@@ -870,29 +870,89 @@ export function activate(context: vscode.ExtensionContext) {
 			return;
 		}
 
-		const selections = editor.selections;
-		if (selections.every(sel => sel.isEmpty)) {
-			vscode.window.showInformationMessage('半角英数字を全角化するには、テキストを選択してください。');
-			return;
+		const document = editor.document;
+		let targetText: string;
+		let targetRange: vscode.Range;
+		let processScope = 'ドキュメント全体';
+
+		// 選択範囲があるかチェック
+		if (editor.selection && !editor.selection.isEmpty) {
+			targetText = document.getText(editor.selection);
+			targetRange = editor.selection;
+			processScope = '選択範囲内';
+		} else {
+			targetText = document.getText();
+			targetRange = new vscode.Range(
+				document.positionAt(0),
+				document.positionAt(targetText.length)
+			);
 		}
 
-		await editor.edit(editBuilder => {
-			for (const sel of selections) {
-				if (sel.isEmpty) { continue; }
-				const text = editor.document.getText(sel);
-				// 半角英数字・記号・スペース (0x20-0x7E) を全角に変換
-				const fullwidthText = text.replace(/[\x20-\x7E]/g, (ch) => {
-					const code = ch.charCodeAt(0);
-					// ASCII範囲(0x20-0x7E)を全角(0xFF00-0xFF5E)にマッピング
-					return String.fromCharCode(code + 0xFEE0);
-				});
-				editBuilder.replace(sel, fullwidthText);
-			}
+		// 半角英数字・記号・スペース (0x20-0x7E) を全角に変換
+		const fullwidthText = targetText.replace(/[\x20-\x7E]/g, (ch) => {
+			const code = ch.charCodeAt(0);
+			// ASCII範囲(0x20-0x7E)を全角(0xFF00-0xFF5E)にマッピング
+			return String.fromCharCode(code + 0xFEE0);
 		});
-		vscode.window.showInformationMessage('選択範囲内の半角文字を全角に変換しました。');
+
+		// 変更がある場合のみ置換を実行
+		if (targetText !== fullwidthText) {
+			await editor.edit(editBuilder => {
+				editBuilder.replace(targetRange, fullwidthText);
+			});
+			vscode.window.showInformationMessage(`${processScope}の半角文字を全角に変換しました。`);
+		} else {
+			vscode.window.showInformationMessage(`${processScope}に変換すべき半角文字が見つかりませんでした。`);
+		}
 	});
 
 	context.subscriptions.push(halfwidthToFullwidthDisposable);
+
+	// 全角英数字を半角に変換するコマンド
+	const fullwidthToHalfwidthDisposable = vscode.commands.registerCommand('guns-tool.fullwidthToHalfwidth', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			vscode.window.showInformationMessage('アクティブなエディタがありません。');
+			return;
+		}
+
+		const document = editor.document;
+		let targetText: string;
+		let targetRange: vscode.Range;
+		let processScope = 'ドキュメント全体';
+
+		// 選択範囲があるかチェック
+		if (editor.selection && !editor.selection.isEmpty) {
+			targetText = document.getText(editor.selection);
+			targetRange = editor.selection;
+			processScope = '選択範囲内';
+		} else {
+			targetText = document.getText();
+			targetRange = new vscode.Range(
+				document.positionAt(0),
+				document.positionAt(targetText.length)
+			);
+		}
+
+		// 全角英数字・記号・スペース (0xFF00-0xFF5E) を半角に変換
+		const halfwidthText = targetText.replace(/[\uFF00-\uFF5E]/g, (ch) => {
+			const code = ch.charCodeAt(0);
+			// 全角範囲(0xFF00-0xFF5E)をASCII範囲(0x20-0x7E)にマッピング
+			return String.fromCharCode(code - 0xFEE0);
+		});
+
+		// 変更がある場合のみ置換を実行
+		if (targetText !== halfwidthText) {
+			await editor.edit(editBuilder => {
+				editBuilder.replace(targetRange, halfwidthText);
+			});
+			vscode.window.showInformationMessage(`${processScope}の全角文字を半角に変換しました。`);
+		} else {
+			vscode.window.showInformationMessage(`${processScope}に変換すべき全角文字が見つかりませんでした。`);
+		}
+	});
+
+	context.subscriptions.push(fullwidthToHalfwidthDisposable);
 
 	const showDocumentStatusDisposable = vscode.commands.registerCommand('guns-tool.showDocumentStatus', async () => {
 		const editor = vscode.window.activeTextEditor;
@@ -914,13 +974,19 @@ export function activate(context: vscode.ExtensionContext) {
 		const charAtCursor = text[offset] || '';
 		const charCode = charAtCursor ? `U+${charAtCursor.charCodeAt(0).toString(16).toUpperCase().padStart(4, '0')} (${charAtCursor})` : 'なし';
 
+		// 選択範囲の文字数を取得
+		const selection = editor.selection;
+		const hasSelection = selection && !selection.isEmpty;
+		const selectionCharCount = hasSelection ? document.getText(selection).length : 0;
+
 		const statusMessage = [
 			`ファイルパス: ${filePath}`,
 			`ファイル名: ${fileName}`,'',
 			`総文字数: ${charCount}`,
-			`行数（改行数）: ${lineCount}`,'',
+			`行数（改行数）: ${lineCount}`,
+			hasSelection ? `選択範囲の文字数: ${selectionCharCount}` : '','',
 			`カーソル位置の文字コード: ${charCode}`
-		].join('\n');
+		].filter(line => line !== '').join('\n');
 
 		vscode.window.showInformationMessage(statusMessage, { modal: true });
 	});
