@@ -64,7 +64,7 @@ https://gunsu.jp/2014/12/20/conventions/
 - [GTool:全角！！、！？等を半角横指定に変換](#guns-tool.tateCombiCharacters)
 - [GTool:全角数字を漢数字に](#guns-tool.fullwidthDigitsToKanji)
 - [GTool:漢数字を全角数字に](#guns-tool.kanjiToFullwidthDigits)
-- ~~[GTool:半角数字を全角数字に](#guns-tool.halfwidthDigitsToFullwidth)~~ （半角英数字全角にコマンドで対応できるので削除予定）
+- ~~[GTool:半角数字を全角数字に](#guns-tool.halfwidthDigitsToFullwidth)~~ （半角英数字を全角にコマンドで対応できるので削除予定）
 - [GTool:半角英数字を全角に](#guns-tool.halfwidthToFullwidth)
 - [GTool:ルビ変換：青空→BCCKS](#guns-tool.rubyConvertAozoraToBccks)
 - [GTool:ルビ変換2：BCCKS→青空](#guns-tool.rubyConvertBccksToAozora)
