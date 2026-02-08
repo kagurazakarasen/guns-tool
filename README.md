@@ -64,7 +64,8 @@ https://gunsu.jp/2014/12/20/conventions/
 - [GTool:全角！！、！？等を半角横指定に変換](#guns-tool.tateCombiCharacters)
 - [GTool:全角数字を漢数字に](#guns-tool.fullwidthDigitsToKanji)
 - [GTool:漢数字を全角数字に](#guns-tool.kanjiToFullwidthDigits)
-- [GTool:半角数字を全角数字に](#guns-tool.halfwidthDigitsToFullwidth)
+- ~~[GTool:半角数字を全角数字に](#guns-tool.halfwidthDigitsToFullwidth)~~ （半角英数字全角にコマンドで対応できるので削除予定）
+- [GTool:半角英数字を全角に](#guns-tool.halfwidthToFullwidth)
 - [GTool:ルビ変換：青空→BCCKS](#guns-tool.rubyConvertAozoraToBccks)
 - [GTool:ルビ変換2：BCCKS→青空](#guns-tool.rubyConvertBccksToAozora)
 - [GTool:青空文庫形式傍点をBCCKS形式圏点へ変換](#guns-tool.convertAozoraEmphasisToBccks)
@@ -84,7 +85,6 @@ https://gunsu.jp/2014/12/20/conventions/
 - [GTool:選択範囲に圏点ルビ（1文字毎）を設定](#guns-tool.setCirclePointRuby)
 - [GTool:なろう形式傍点追加](#guns-tool.addNarouEmphasis)
 - [GTool:選択範囲内アルファベット小文字を大文字化](#guns-tool.toUpperCase)
-- [GTool:半角英数字を全角に](#guns-tool.halfwidthToFullwidth)
 - [GTool:選択範囲内の全角英数字を半角に](#guns-tool.fullwidthToHalfwidth)
 
 ### 情報表示コマンド
